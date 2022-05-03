@@ -1,0 +1,13 @@
+{
+    "name": "vendor/composer_vendor",
+    "type": "project",
+    "authors": [
+        {
+            "name": "GGOx94",
+            "email": "mustbehax@hotmail.fr"
+        }
+    ],
+    "require": {
+        "twig/twig": "^2.0"
+    }
+}
