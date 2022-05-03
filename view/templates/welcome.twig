@@ -1,29 +1,70 @@
-<h1 class="mainTitle">Magnifique page d'accueil</h1>
-<h2>G.G.O</h2>
-<h3>[photo]</h3>
-<h3>Catchphrase !</h3>
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('public/assets/img/home-bg.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                <img class="photo" src="public/assets/img/otter.png" alt="">
+                    <h1>
+                        {{ title }}
+                    </h1>
+                    <span class="subheading">Phrase d'accroche !</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 
-<form action="index.php?action=sendContactMsg" method="post">
-    <div>
-        <label for="name">Votre nom</label><br />
-        <input type="text" id="name" name="name" />
-    </div>
-    <div>
-        <label for="email">Votre email</label><br />
-        <input type="text" id="email" name="email" />
-    </div>
-    <div>
-        <label for="content">Contenu de votre message</label><br />
-        <textarea id="content" name="content"></textarea>
-    </div>
-    <div>
-        <input type="submit" />
-    </div>
-</form>
+<!-- Main Content-->
+<main class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius praesentium recusandae illo eaque architecto error, repellendus iusto reprehenderit, doloribus, minus sunt. Numquam at quae voluptatum in officia voluptas voluptatibus, minus!</p>
+                
+                <hr class="my-4" />
+                <h3 class="text-center" style="text-decoration: underline;":><a href="#">CV ici</a></h3>
 
-<h3><a href="#">CV here</a></h3>
-<ul>
-    <li><a href="#">LinkedIn</a></li>
-    <li><a href="#">Facebook</a></li>
-    <li><a href="#">Twitter</a></li>
-</ul>
+                <hr class="my-4" />
+                <p>Vous souhaitez me contacter ? Remplissez le formulaire ci-dessous, et à très vite !</p>
+                <div class="my-5">
+                    <!-- To make this form functional, sign up at https://startbootstrap.com/solution/contact-forms to get an API token-->
+                    <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                        <div class="form-floating">
+                            <input class="form-control" id="name" type="text" placeholder="Entrez votre nom..." data-sb-validations="required" />
+                            <label for="name">Votre nom</label>
+                            <div class="invalid-feedback" data-sb-feedback="name:required">Un nom est nécessaire !</div>
+                        </div>
+                        <div class="form-floating">
+                            <input class="form-control" id="email" type="email" placeholder="Entrez votre adresse email..." data-sb-validations="required,email" />
+                            <label for="email">Votre adresse email</label>
+                            <div class="invalid-feedback" data-sb-feedback="email:required">Un email est nécessaire !</div>
+                            <div class="invalid-feedback" data-sb-feedback="email:email">L'email est invalide !</div>
+                        </div>
+                        <div class="form-floating">
+                            <textarea class="form-control" id="message" placeholder="Entrez votre message ici..." style="height: 12rem" data-sb-validations="required"></textarea>
+                            <label for="message">Message</label>
+                            <div class="invalid-feedback" data-sb-feedback="message:required">Un message est nécessaire !</div>
+                        </div>
+                        <br />
+                        <!-- Submit success message-->
+                        <div class="d-none" id="submitSuccessMessage">
+                            <div class="text-center mb-3">
+                                <div class="fw-bolder">Votre message a bien été transmis !</div>
+                                <br />
+                                <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                            </div>
+                        </div>
+                        <!-- Submit error message-->
+                        <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Une erreur est survenue lors de l'envoi du message !</div></div>
+                        <!-- Submit Button-->
+                        <button class="btn btn-primary text-uppercase disabled" id="submitButton" type="submit">Envoyer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>

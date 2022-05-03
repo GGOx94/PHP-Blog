@@ -5,11 +5,12 @@ require_once('vendor/autoload.php');
 $loader = new \Twig\Loader\FilesystemLoader('./view/templates');
 $twig = new \Twig\Environment($loader);
 
-$title = '[GGO] P5-Blog-PHP';
-$content = $twig->render('welcome.twig', []);
+$title = 'Amazing blog';
+$content = $twig->render('welcome.twig', [
+    'title' => $title
+]);
 
-echo $twig->render('base.twig',
-[
+echo $twig->render('base.twig', [
     'title' => $title,
     'content' => $content
 ]);
