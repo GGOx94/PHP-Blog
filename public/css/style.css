@@ -1,0 +1,13 @@
+#navmenu {
+    text-align: center;
+    background-color: rgba(0, 0, 255, 0.184);
+}
+#footer {
+    text-align: center;
+    background-color: rgba(165, 42, 42, 0.261);
+}
+
+.error {
+    text-align: center;
+    background-color: rgba(255, 0, 0, 0.379);
+}
