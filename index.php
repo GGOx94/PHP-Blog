@@ -2,11 +2,15 @@
 
 require_once('controller/frontend.php');
 
+if(!isset($controller))
+    $controller = new Frontend();
+
 try 
 {
     if(!isset($_GET['action'])) // Serve landing page
     {
-        welcome(); 
+        // welcome(); 
+        $controller->displayWelcome();
         return;
     }
         
@@ -14,7 +18,7 @@ try
     switch($_GET['action'])
     {
         case 'listPosts':
-            echo 'Action demandée : lister les posts';
+            $controller->displayPosts();
             break;
         case 'contact' : 
             echo 'Action demandée : page de contact';
@@ -28,5 +32,5 @@ try
 catch(Exception $e) 
 {
     $e_str = '[EXCEPTION_ROUTER] ' . $e->getMessage();
-    error($e_str);
+    $controller->displayError($e_str);
 }
