@@ -1,0 +1,47 @@
+{% extends 'base.twig' %}
+{% block content %}
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('/assets/img/post-bg.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>
+                        {{title}}
+                    </h1>
+                    <span class="meta">
+                        Par <a href="#!">{{post.author}}</a> le {{post.createdAt}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article class="mb-4 container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+
+        {{ post.content }}
+        
+        <hr class="my-4" />
+        <h3>Commentaires</h3>
+        <hr class="my-4" />
+
+        <ul>
+            {% for com in comments %}
+                <li>
+                    <span class="meta">
+                        Par <a href="#!">{{com.author}}</a> le {{com.createdAt}}
+                    </span>
+                    <p>{{com.content}}</p>
+                </li>
+            {% endfor %}
+        </ul>
+
+        </div>
+    </div>
+</article>
+{% endblock %}
