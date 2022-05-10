@@ -1,25 +1,34 @@
 <?php
 
 require '../vendor/autoload.php';
-$uri = $_SERVER['REQUEST_URI'];
-$routes = require_once '../config/routes.php';
+require '../config/routes.php';
 
-if (array_key_exists($uri, $routes))
+$uri = $_SERVER['REQUEST_URI'];
+$req = getControllerAndArgs($uri);
+
+if(!$req)
 {
-    $ctrlName = $routes[$uri];
-    $ctrler = new $ctrlName[0]();
-    $response =  $ctrler();
-    if ($response )
+    header('HTTP/1.0 404 Not Found'); //TODO 404 in ERROR page
+    exit(0);
+}
+
+try 
+{
+    $response = $req[0]($req[1]);
+
+    if ($response)
     {
         echo $response;
     }  
     else
     {
-        //TODO display ERRzezedfsdsdsqdsqdsdsdsdsd
+        //TODO display ERROR page
     }
-
-    exit(0);
+}
+catch(Exception $e)
+{
+    //TODO display ERROR
+    echo 'EXCEPTION IN ROUTER : ' . $e;
 }
 
-echo 'NOPE';
-// header('HTTP/1.0 404 Not Found');
+
