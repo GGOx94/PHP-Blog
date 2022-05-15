@@ -3,20 +3,24 @@
 use App\Controller\HomeController;
 use App\Controller\PostsListController;
 use App\Controller\PostController;
+use App\Controller\LoginController;
+use App\Controller\LogoutController;
 
 $routes = 
 [
     'postsList'    => PostsListController::class,
     'post'         => PostController::class,
+    'login'        => LoginController::class,
+    'logout'        => LogoutController::class
 ];
 
-function getControllerAndArgs($path)
-{  
-    global $routes;
-
+function createController($path)
+{
     if($path === '/') {
         return [new HomeController(), null];
     }
+
+    global $routes;
 
     $values = explode('/', $path);
     for($i = 0; $i < count($values); $i++)
@@ -34,4 +38,9 @@ function getControllerAndArgs($path)
     }
     
     return null;
+}
+
+function setupSession()
+{
+    
 }

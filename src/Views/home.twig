@@ -54,18 +54,12 @@
                             <div class="invalid-feedback" data-sb-feedback="message:required">Un message est nécessaire !</div>
                         </div>
                         <br />
-                        <!-- Submit success message-->
-                        <div class="d-none" id="submitSuccessMessage">
-                            <div class="text-center mb-3">
-                                <div class="fw-bolder">Votre message a bien été transmis !</div>
-                                <br />
-                                <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                            </div>
-                        </div>
-                        <!-- Submit error message-->
-                        <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Une erreur est survenue lors de l'envoi du message !</div></div>
+                        <!-- Submit success / error messages -->
+                        <div class="d-none" id="submitSuccessMessage"></div>
+                        <div class="d-none" id="submitErrorMessage"></div>
                         <!-- Submit Button-->
-                        <button class="btn btn-primary text-uppercase disabled" id="submitButton" type="submit">Envoyer</button>
+                        <button class="d-none" id="submitButton" type="submit">Envoyer</button>
+                        <input type="submit" class="btn btn-primary text-uppercase" value='Envoyer'>
                     </form>
                 </div>
             </div>
@@ -73,5 +67,5 @@
     </div>
 </main>
 
-<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+<script src="js/sb-forms.min.js"></script>
 {% endblock %}

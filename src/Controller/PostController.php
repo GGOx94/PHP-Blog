@@ -25,6 +25,6 @@ class PostController extends BaseController
             'comments' => $comments
         ];
         
-        return $this->twig->render('post.twig', $data);
+        return $this->render('post.twig', $data);
     }
 }

@@ -12,6 +12,21 @@ class Manager
         $this->cnx = new \PDO('mysql:host=localhost;dbname=p5phpblog;charset=utf8', 'ggo', '');
     }
 
+    public function loginUser($email, $password)
+    {
+        $pwdCmp = md5($password);
+
+        $req = $this->cnx->prepare(
+                'SELECT u.name, u.email, u.fk_user_status as status
+                FROM user u
+                WHERE u.email = ? AND u.password = ?');
+
+        $req->setFetchMode(\PDO::FETCH_CLASS, User::class);
+        $rslt = $req->execute(array($email, $pwdCmp));
+        
+        return !$rslt ? false : $req->fetch();
+    }
+
     public function getAllPosts() : array
     {
         $req = $this->cnx->query(

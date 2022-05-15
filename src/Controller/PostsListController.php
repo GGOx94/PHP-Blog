@@ -12,6 +12,6 @@ class PostsListController extends BaseController
             'posts' => $posts
         ];
         
-        return $this->twig->render('postsList.twig', $data);
+        return $this->render('postsList.twig', $data);
     }
 }

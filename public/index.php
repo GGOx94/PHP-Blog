@@ -4,7 +4,9 @@ require '../vendor/autoload.php';
 require '../config/routes.php';
 
 $uri = $_SERVER['REQUEST_URI'];
-$req = getControllerAndArgs($uri);
+$req = createController($uri);
+
+session_start();
 
 if(!$req)
 {
@@ -14,7 +16,7 @@ if(!$req)
 
 try 
 {
-    $response = $req[0]($req[1]);
+    $response = $req[0]($req[1]); // Call the _invoke of the controller with its potential args
 
     if ($response)
     {
@@ -22,7 +24,7 @@ try
     }  
     else
     {
-        //TODO display ERROR page
+        //TODO display home page with error ? error page ?
     }
 }
 catch(Exception $e)
