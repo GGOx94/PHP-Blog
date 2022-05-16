@@ -6,10 +6,10 @@ use RuntimeException;
 
 class PostController extends BaseController
 {
-    public function __invoke($args)
+    public function __invoke(array $args)
     {
-        if(!$args || !is_numeric($args[0])) {
-            throw new RuntimeException("Mauvais ID de Post précisé.");
+        if(!$args) {
+            throw new RuntimeException("Aucun ID de post précisé.");
         }
 
         $post = $this->db->getPostByID($args[0]);

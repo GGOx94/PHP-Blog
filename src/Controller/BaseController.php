@@ -1,11 +1,9 @@
 <?php
 
-//require_once('vendor/autoload.php');
-
 namespace App\Controller;
 use App\Model\Manager;
 
-class BaseController 
+abstract class BaseController 
 {
     private $twig;
     protected $db;

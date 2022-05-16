@@ -19,25 +19,28 @@
 <main class="mb-4">
 <div class="container px-4 px-lg-5">
 <div class="row gx-4 gx-lg-5 justify-content-center">
-<div class="col-md-10 col-lg-8 col-xl-7">
 
-    {% if error_message is defined %}
+{% if session_username is defined %}
 
-        <div class="alert alert-danger" role="alert">
-            {{ error_message }}
-        </div> 
+    <form action="logout" method="post">
+        <input class="form-control btn btn-danger" type="submit" value="Se déconnecter" />
+    </form>
+    
+{% else %}
 
+    {% if error_messages is defined %}
+        {% for errMsg in error_messages %}
+            <div class="row justify-content-center">
+            <div class="col col-md-7 col-lg-7 col-xl-7 alert alert-danger text-center">
+                {{ errMsg }}
+                </div>
+            </div> 
+        {% endfor %}
     {% endif %}
 
-    {% if session_username is defined %}
-
-        <form action="logout" method="post">
-            <input class="form-control btn btn-danger" type="submit" value="Se déconnecter" />
-        </form>
-        
-    {% else %}
-        <!-- Login/Signup Form -->
-        <form id="loginForm" action="login" method="post" data-sb-form-api-token="">
+    <div class="col-md-5 col-lg-4 col-xl-3">
+        <!-- Login Form -->
+        <form id="loginForm" action="/login" method="post" data-sb-form-api-token="">
             <div class="form-floating">
                 <input class="form-control" id="email" name="email" type="email" placeholder="Votre email" data-sb-validations="required,email" />
                 <label for="email">Email</label>
@@ -51,19 +54,50 @@
             </div>
 
             <br />
-            <!-- 
-                Bootstrap small hack to keep the form 'invalid feedbacks'.
-                Those 2 divs and a button with id submitButton must be present. 
-                Hide the button and put our own instead. 
-            -->
             <div class="d-none" id="submitSuccessMessage"></div>
             <div class="d-none" id="submitErrorMessage"></div>
             <button class="d-none" id="submitButton" type="submit"></button>
             <input type="submit" class="btn btn-primary text-uppercase" value='Se connecter'>
         </form>
-    {% endif %}
+        </div>
 
-</div>
+        <div class="col-md-5 col-lg-4 col-xl-3">
+        <!-- Sign-up Form -->
+        <form id="signupForm" action="/signup" method="post" data-sb-form-api-token="">
+            <div class="form-floating">
+                <input class="form-control" id="name-signup" name="name" placeholder="Votre pseudo" data-sb-validations="required" />
+                <label for="name">Pseudonyme</label>
+                <div class="invalid-feedback" data-sb-feedback="name-signup:required">Veuillez renseigner votre pseudonyme.</div>
+            </div>
+            <div class="form-floating">
+                <input class="form-control" id="email-signup" name="email" type="email" placeholder="Votre email" data-sb-validations="required,email" />
+                <label for="email">Email</label>
+                <div class="invalid-feedback" data-sb-feedback="email-signup:required">Veuillez renseigner votre email.</div>
+                <div class="invalid-feedback" data-sb-feedback="email-signup:email">Le format de l'email est invalide.</div>
+            </div>
+            <div class="form-floating">
+                <input class="form-control" id="password-signup" name="password" placeholder="Votre mot de passe" type="password" data-sb-validations="required" />
+                <label for="password">Mot de passe</label>
+                <div class="invalid-feedback" data-sb-feedback="password-signup:required">Veuillez renseigner votre mot de passe.</div>
+            </div>
+            <div class="form-floating">
+                <input class="form-control" id="password-signup-2" name="password-2" placeholder="Vérifier votre mot de passe" type="password" data-sb-validations="required" />
+                <label for="password">Vérifiez mot de passe</label>
+                <div class="invalid-feedback" data-sb-feedback="password-signup-2:required">Veuillez réécrire votre mot de passe.</div>
+            </div>
+
+            <br />
+            <div class="d-none" id="submitSuccessMessage"></div>
+            <div class="d-none" id="submitErrorMessage"></div>
+            <button class="d-none" id="submitButton" type="submit"></button>
+            <input type="submit" class="btn btn-primary text-uppercase" value="S'enregistrer">
+        </form>
+        </div>
+
+        </div>
+    </div>
+{% endif %}
+
 </div>
 </div>
 </main>

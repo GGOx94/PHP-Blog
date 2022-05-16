@@ -4,58 +4,50 @@ namespace App\Controller;
 
 class LoginController extends BaseController
 {
-    private $errMsg;
-
     public function __invoke()
     {
-        if(!isset($_SESSION['username']))
-        {
-            if(!$_POST)
-            {
-                return $this->displayPage('Se connecter');
-            }
-            else if(isset($_POST['email']) && isset($_POST['password']))
-            {
-                return $this->loginUser($_POST['email'], $_POST['password']);
-            }
-            else
-            {
-                return $this->displayError();
-            }
+        if (isset($_SESSION['username'])) {
+            return $this->displayPage('Bonjour, ' . $_SESSION['username']);
         }
 
-        return $this->displayPage('Connecté : ' . $_SESSION['username']);
+        if (!$_POST) {
+            return $this->displayPage('Se connecter');
+        }
+
+        if (isset($_POST['email']) && isset($_POST['password'])) {
+            return $this->loginUser($_POST['email'], $_POST['password']);
+        }
+
+        return $this->displayErrors();
     }
 
     private function loginUser($email, $password)
     {
         $user = $this->db->loginUser($email, $password);
 
-        if($user) // Success : User is logged-in, set session and redirect to homepage
+        if ($user) // Success : User is logged-in, set session and redirect to homepage
         {
             $_SESSION['username'] = $user->getName();
             header('location: /');
             return;
         }
 
-        return $this->displayError();
+        return $this->displayErrors();
     }
 
     private function displayPage($title)
     {
-        $data = [ 'title' => $title ];
-
-        if($this->errMsg)
-        {
-            $data['error_message'] = $this->errMsg;
-        }
-
+        $data = ['title' => $title];
         return $this->render('login.twig', $data);
     }
 
-    private function displayError()
+    private function displayErrors()
     {
-        $this->errMsg = 'Mauvais email ou mot de passe.';
-        return $this->displayPage('Se connecter');
+        // Only one error possible in login : wrong email/password
+
+        $data = ['title' => 'Se connecter'];
+        $data['error_messages'] = ["Mauvais email ou mot de passe."];
+
+        return $this->render('login.twig', $data);
     }
 }

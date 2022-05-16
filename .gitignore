@@ -1,5 +1,6 @@
 tmp/
 .vscode/
+.idea/
 *.code-workspace
 NOTES.txt
 *.lock
