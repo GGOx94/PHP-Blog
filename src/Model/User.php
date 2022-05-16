@@ -1,10 +1,11 @@
 <?php
 
+namespace App\Model;
+
 class User
 {
     private $name;
     private $email;
-    private $password;
     private $status;
 
     //TODO constructor when registering user
@@ -27,14 +28,6 @@ class User
     public function getEmail()
     {
         return $this->email;
-    }
-
-    /**
-     * Get the value of password
-     */ 
-    public function getPassword()
-    {
-        return $this->password;
     }
 
     /**

@@ -12,6 +12,46 @@ class Manager
         $this->cnx = new \PDO('mysql:host=localhost;dbname=p5phpblog;charset=utf8', 'ggo', '');
     }
 
+    public function loginUser($email, $password)
+    {
+        $pwdCmp = md5($password);
+
+        $req = $this->cnx->prepare(
+                'SELECT u.name, u.email, u.fk_user_status as status
+                FROM user u
+                WHERE u.email = ? AND u.password = ?');
+
+        $req->setFetchMode(\PDO::FETCH_CLASS, User::class);
+        $rslt = $req->execute(array($email, $pwdCmp));
+        
+        return !$rslt ? false : $req->fetch();
+    }
+
+    public function registerUser($name, $email, $password)
+    {
+        $pwdHash = md5($password);
+
+        $req = $this->cnx->prepare(
+                'INSERT INTO user (name, email, password, fk_user_status)
+                VALUES (?, ?, ?, "visitor")');
+
+        return $req->execute(array($name, $email, $pwdHash));
+    }
+
+    public function checkUserExists($username)
+    {
+        $req = $this->cnx->prepare( 'SELECT * FROM user u WHERE u.name = ?');
+        $req->execute(array($username));
+        return $req->fetch() ? true : false;
+    }
+
+    public function checkEmailExists($email)
+    {
+        $req = $this->cnx->prepare( 'SELECT * FROM user u WHERE u.email = ?');
+        $req->execute(array($email));
+        return $req->fetch() ? true : false;
+    }
+
     public function getAllPosts() : array
     {
         $req = $this->cnx->query(
