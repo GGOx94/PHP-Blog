@@ -18,9 +18,9 @@ abstract class BaseController
 
     protected function render($template, $data)
     {
-        if(isset($_SESSION['username']))
-        {
-            $this->twig->addGlobal('session_username', $_SESSION['username']);
+        $username = \App\Utils\Session::GetUsername();
+        if($username) {
+            $this->twig->addGlobal('session_username', $username);
         }
 
         return $this->twig->render($template, $data);

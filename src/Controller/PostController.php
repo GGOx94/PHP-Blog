@@ -8,10 +8,6 @@ class PostController extends BaseController
 {
     public function __invoke(array $args)
     {
-        if(!$args) {
-            throw new RuntimeException("Aucun ID de post précisé.");
-        }
-
         $post = $this->db->getPostByID($args[0]);
         if(!$post) {
             throw new RuntimeException("Ce post n'existe pas.");

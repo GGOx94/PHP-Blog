@@ -6,7 +6,7 @@ class LoginController extends BaseController
 {
     public function __invoke()
     {
-        if (isset($_SESSION['username'])) {
+        if (\App\Utils\Session::IsLogged()) {
             return $this->displayPage('Bonjour, ' . $_SESSION['username']);
         }
 
@@ -27,9 +27,8 @@ class LoginController extends BaseController
 
         if ($user) // Success : User is logged-in, set session and redirect to homepage
         {
-            $_SESSION['username'] = $user->getName();
-            header('location: /');
-            return;
+            \App\Utils\Session::SetUsername($user->getName());
+            return header('location: /');
         }
 
         return $this->displayErrors();
@@ -43,8 +42,7 @@ class LoginController extends BaseController
 
     private function displayErrors()
     {
-        // Only one error possible in login : wrong email/password
-
+        // Only one error possible when trying to log in : wrong email or password
         $data = ['title' => 'Se connecter'];
         $data['error_messages'] = ["Mauvais email ou mot de passe."];
 

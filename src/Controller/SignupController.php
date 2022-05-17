@@ -52,9 +52,8 @@ class SignupController extends BaseController
 
         if ($user) // Success : User is logged-in, set session and redirect to homepage
         {
-            $_SESSION['username'] = $user->getName();
-            header('location: /');
-            return;
+            \App\Utils\Session::SetUsername($user->getName());
+            return header('location: /');
         }
 
         $this->errArr[] = "Un problème est survenu lors de l'enregistrement.";
