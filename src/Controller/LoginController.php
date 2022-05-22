@@ -4,6 +4,13 @@ namespace App\Controller;
 
 class LoginController extends BaseController
 {
+    private $db;
+
+    public function __construct()
+    {
+        $this->db = new \App\Model\UserManager();
+    }
+
     public function __invoke()
     {
         if (\App\Utils\Session::IsLogged()) {

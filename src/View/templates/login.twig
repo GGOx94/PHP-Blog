@@ -20,7 +20,7 @@
 <div class="container px-4 px-lg-5">
 <div class="row gx-4 gx-lg-5 justify-content-center">
 
-{% if session_username is defined %}
+{% if session_username %}
 
     <form class="col-md-5 col-lg-7 col-xl-6" action="logout" method="post">
         <input class="form-control btn btn-danger" type="submit" value="Se déconnecter" />
@@ -28,7 +28,7 @@
     
 {% else %}
 
-    {% if error_messages is defined %}
+    {% if error_messages %}
         <div class="row justify-content-center">
         {% for errMsg in error_messages %}
             <div class="col-md-7 col-lg-7 col-xl-7 alert alert-danger text-center">
@@ -89,7 +89,7 @@
             <br />
             <div class="d-none" id="submitSuccessMessage"></div>
             <div class="d-none" id="submitErrorMessage"></div>
-            <button class="d-none" id="submitButton2" type="submit"></button>
+            <button class="d-none" id="submitButton" type="submit"></button>
             <input type="submit" class="btn btn-primary text-uppercase" value="S'enregistrer">
         </form>
         </div>

@@ -1,11 +1,10 @@
 <?php
 
 require '../vendor/autoload.php';
-$routes = require '../config/routes.php';
 
 try 
 {
-    $req = createController($_SERVER['REQUEST_URI'], $routes);
+    $req = createController($_SERVER['REQUEST_URI']);
 
     App\Utils\Session::Start();
     
@@ -29,19 +28,21 @@ catch (Exception $e)
     echo 'EXCEPTION TRIGGERED | ROUTER : ' . $e->getMessage(); // Todo : customize runtime errors
 }
 
-function createController($path, $routes) : array
+function createController($path) : array
 {
-    foreach ($routes as $uri => $route)
+    foreach (\Config\Routes::get() as $uri => $controller)
     {
         if (preg_match('`^' . $uri . '$`', $path, $groupMatches)) 
         {
             $params = null;
 
-            if(count($groupMatches) > 1) {
+             // If we find any group matches : we have additional parameters
+            if(count($groupMatches) > 1) 
+            {
                 $params = array_slice($groupMatches, 1);
             }
             
-            return [new $route(), $params];
+            return [new $controller(), $params];
         }
     }
 

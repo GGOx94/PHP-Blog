@@ -11,7 +11,7 @@ class Session
     }
 
     // Returns whether or not the current session holds user data
-    // Performs an session ID regeneration in the process
+    // Performs a session ID regen in the process
     public static function IsLogged() : bool
     {
         if(session_status() != PHP_SESSION_ACTIVE) {
@@ -29,7 +29,6 @@ class Session
         {
             session_unset();
             session_destroy();
-            Session::Start();
         }
     }
 
@@ -43,7 +42,7 @@ class Session
         return Session::IsLogged();
     }
 
-    public static function GetUsername() 
+    public static function GetUsername() : ?string
     { 
         return isset($_SESSION['username']) ? $_SESSION['username'] : null; 
     }

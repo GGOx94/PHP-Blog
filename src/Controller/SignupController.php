@@ -5,6 +5,12 @@ namespace App\Controller;
 class SignupController extends BaseController
 {
     private $errArr = [];
+    private $db;
+
+    public function __construct()
+    {
+        $this->db = new \App\Model\UserManager();
+    }
 
     public function __invoke()
     {
@@ -13,23 +19,19 @@ class SignupController extends BaseController
         $name = $_POST['name'];
         $email = $_POST['email'];
 
-        if($pwd1 !== $pwd2)
-        {
+        if($pwd1 !== $pwd2) {
             $this->errArr[] = "Les mots de passe ne correspondent pas.";
         }
 
-        if($this->db->checkUserExists($name))
-        {
+        if($this->db->checkUserExists($name)) {
             $this->errArr[] = "Ce pseudonyme est déjà utilisé.";
         }
 
-        if($this->db->checkEmailExists($email))
-        {
+        if($this->db->checkEmailExists($email)) {
             $this->errArr[] = "Cet e-mail est déjà enregistré.";
         }
         
-        if(count($this->errArr) > 0)
-        {
+        if(count($this->errArr) > 0) {
             return $this->displayErrors();
         }
 
