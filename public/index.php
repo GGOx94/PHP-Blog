@@ -7,9 +7,14 @@ try
     $req = createController($_SERVER['REQUEST_URI']);
 
     App\Utils\Session::Start();
+
+    if(isset($_POST['pouet']))
+    {
+        echo 'coucou';
+        exit(42);
+    }
     
     $response = $req[0]($req[1]); // Call the _invoke of the controller with its potential args
-
     if ($response) {
         echo $response;
     }
@@ -25,7 +30,8 @@ catch (Exception $e)
         exit(1);
     }
     
-    echo 'EXCEPTION TRIGGERED | ROUTER : ' . $e->getMessage(); // Todo : customize runtime errors
+    // Todo : customize runtime errors
+    echo '<br/><p style="background-color:red;color:white">EXCEPTION TRIGGERED | ROUTER : ' . $e->getMessage() . '</p>'; 
 }
 
 function createController($path) : array

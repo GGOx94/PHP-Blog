@@ -6,7 +6,7 @@ abstract class BaseManager
 {
     private static $cnx;
     
-    protected static function getCnx()
+    protected static function getCnx() : \PDO
     {
         if (!isset(self::$cnx))
         {

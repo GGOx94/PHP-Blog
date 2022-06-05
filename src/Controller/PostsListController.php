@@ -13,12 +13,11 @@ class PostsListController extends BaseController
 
     public function __invoke()
     {
-        $posts = $this->db->getAllPosts();
         $data = [
-            'title' => 'Posts du Blog',
-            'posts' => $posts
+            'title' => 'Les posts du Blog',
+            'posts' => $this->db->getAllPosts()
         ];
-        
+
         return $this->render('postsList.twig', $data);
     }
 }

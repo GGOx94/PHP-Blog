@@ -14,10 +14,10 @@ class SignupController extends BaseController
 
     public function __invoke()
     {
-        $pwd1 = $_POST['password'];
-        $pwd2 = $_POST['password-2'];
-        $name = $_POST['name'];
-        $email = $_POST['email'];
+        $pwd1 = \App\Utils\Post::GetOrThrow('password');
+        $pwd2 = \App\Utils\Post::GetOrThrow('password-2');
+        $name = \App\Utils\Post::GetOrThrow('name');
+        $email = \App\Utils\Post::GetOrThrow('email');
 
         if($pwd1 !== $pwd2) {
             $this->errArr[] = "Les mots de passe ne correspondent pas.";
@@ -54,7 +54,7 @@ class SignupController extends BaseController
 
         if ($user) // Success : User is logged-in, set session and redirect to homepage
         {
-            \App\Utils\Session::SetUsername($user->getName());
+            \App\Utils\Session::SetUserVars($user);
             return header('location: /');
         }
 

@@ -32,18 +32,25 @@ class Session
         }
     }
 
-    public static function SetUsername($username) : bool
+    public static function SetUserVars(\App\Model\User $user) : bool
     {
         if(session_status() != PHP_SESSION_ACTIVE) {
             Session::Start();
         }
 
-        $_SESSION['username'] = $username;
+        $_SESSION['username'] = $user->getName();
+        $_SESSION['admin'] = $user->getStatus() === 'admin';
+
         return Session::IsLogged();
     }
 
     public static function GetUsername() : ?string
     { 
         return isset($_SESSION['username']) ? $_SESSION['username'] : null; 
+    }
+
+    public static function IsUserAdmin() : bool
+    {
+        return isset($_SESSION['admin']) && $_SESSION['admin'] == true;
     }
 }

@@ -27,7 +27,8 @@ class PostController extends BaseController
         $data = [
             'title' => $post->getTitle(),
             'post' => $post,
-            'comments' => $comments
+            'comments' => $comments,
+            'postId' => $args[0]
         ];
         
         return $this->render('post.twig', $data);

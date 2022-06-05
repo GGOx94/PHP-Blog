@@ -1,6 +1,7 @@
 {
     "name": "ggo/blog",
     "type": "project",
+    "description": "Projet de blog en PHP pour la formation PHP/Symfony d'OpenClassrooms",
     "license": "MIT",
     "autoload": {
         "psr-4": {
@@ -15,6 +16,7 @@
         }
     ],
     "require": {
-        "twig/twig": "^2.0"
+        "twig/twig": "^2.12",
+        "twig/intl-extra": "^3.4"
     }
 }

@@ -12,6 +12,8 @@ class Post
     private $modifiedAt;
     private $author;
 
+    private array $comments = []; // Used in admin panel page
+
     /************************/
     /** GETTERS AND SETTERS */
     /************************/
@@ -22,6 +24,18 @@ class Post
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -106,5 +120,25 @@ class Post
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * Get the value of comments
+     */ 
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Append a comment to the $comments array
+     * 
+     * @return  self
+     */ 
+    public function setComments(array $com)
+    {
+        $this->comments = $com;
+
+        return $this;
     }
 }

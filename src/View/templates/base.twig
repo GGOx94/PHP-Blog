@@ -83,7 +83,10 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="small text-center text-muted fst-italic">Copyright &copy; G.G.O 2022 | <a href="/login">Admin.</a></div>
+                    <div class="small text-center text-muted fst-italic">
+                        Copyright &copy; G.G.O 2022 | 
+                        <a href={{ session_isAdmin ? "/admin" : "/login" }}>Admin.</a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -37,6 +37,16 @@ class UserManager extends BaseManager
         return $req->fetch() ? true : false;
     }
 
+    public function isUserAdmin($username)
+    {
+        $req = $this->getCnx()->prepare(
+            'SELECT u.fk_user_status FROM user u WHERE u.name = ?');
+
+        $req->execute(array($username));
+        $rslt = $req->fetch();
+        return $rslt === 'admin';
+    }
+
     public function checkEmailExists($email)
     {
         $req = $this->getCnx()->prepare( 'SELECT * FROM user u WHERE u.email = ?');

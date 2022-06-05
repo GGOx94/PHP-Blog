@@ -32,4 +32,36 @@ class PostManager extends BaseManager
         $req->execute(array($postID));
         return $req->fetch();
     }
+
+    public function createPost(Post $post, string $userName) : ?int
+    {
+        $req = $this->getCnx()->prepare(
+                'INSERT INTO post (title, head, content, creation_date, fk_user_name)
+                VALUES (?, ?, ?, now(), ?);');
+
+        $rslt = $req->execute(array($post->getTitle(), $post->getHead(), $post->getContent(), $userName));
+
+        return $rslt ? $this->getCnx()->lastInsertId() : null;
+    }
+
+    public function updatePost(Post $post)
+    {
+        $req = $this->getCnx()->prepare(
+                'UPDATE post
+                SET title = ?, head = ?, content = ?, modification_date = now() 
+                WHERE id = ?');
+
+        $rslt = $req->execute(array($post->getTitle(), $post->getHead(), $post->getContent(), $post->getId()));
+
+        return $rslt;
+    }
+
+    public function deletePost($postId)
+    {
+        $req = $this->getCnx()->prepare('DELETE FROM post WHERE id = ?');
+        
+        $rslt = $req->execute(array($postId));
+
+        return $rslt;
+    }
 }

@@ -21,11 +21,10 @@ class LoginController extends BaseController
             return $this->displayPage('Se connecter');
         }
 
-        if (isset($_POST['email']) && isset($_POST['password'])) {
-            return $this->loginUser($_POST['email'], $_POST['password']);
-        }
+        $email = \App\Utils\Post::GetOrThrow('email');
+        $password = \App\Utils\Post::GetOrThrow('password');
 
-        return $this->displayErrors();
+        return $this->loginUser($email, $password);
     }
 
     private function loginUser($email, $password)
@@ -34,7 +33,7 @@ class LoginController extends BaseController
 
         if ($user) // Success : User is logged-in, set session and redirect to homepage
         {
-            \App\Utils\Session::SetUsername($user->getName());
+            \App\Utils\Session::SetUserVars($user);
             return header('location: /');
         }
 
