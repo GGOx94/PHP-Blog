@@ -1,0 +1,118 @@
+{% extends 'base.twig' %}
+{% block content %}
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('/assets/img/post-bg.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>
+                        {{title}}
+                    </h1>
+                    <h2 class="subheading">{{ post.head }}</h2>
+                    <span class="meta">
+                        Par <a href="#!">{{post.author}}</a> le {{post.createdAt|format_datetime('medium', 'short', locale='fr')}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article class="mb-4 container px-4 px-lg-5">
+<div class="row gx-4 gx-lg-5 justify-content-center">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            {{ post.content }}
+        </div>
+    </div>
+</article>
+
+<!-- Comments section -->
+<div class="mb-4 container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            {% if session_username %}
+                <hr class="my-4" />
+                <h4>{{ session_username }}, donnez-nous votre avis :</h4>
+                <br />
+
+                <form id="commentForm" action="/comment/add" method="post" data-sb-form-api-token="">
+                    <div class="form-group">
+                        <div class="mb-0">
+                            <textarea class="form-control" name="commentContent" rows="3" placeholder="Votre message"></textarea>
+                            <small class="form-text text-muted"><em>Le commentaire sera validé par un modérateur avant d'apparaître.</em></small>
+                        </div>
+                    </div>
+                    <input type="hidden" name="postId" value="{{postId}}">
+                    <br />
+                    <div class="row justify-content-center">
+                        <input type="submit" id="submitButton" class="col-md-3 col-sm-6 btn btn-primary text-uppercase" value='Envoyer'>
+                    </div> 
+                </form>
+                
+            {% endif %}
+
+            <hr class="my-4" />
+            <h3>Commentaires publiés</h3>
+            <hr class="my-4" />
+
+            <ul>
+                {% for com in comments %}
+                    {% set approved = com.status is same as('approved') %}
+
+                    {# Comments and commands shown for admins #}
+                    {% if session_isAdmin %} 
+                        <li class="comment-{{ approved ? "approved" : "waiting"}}">
+                            <span class="meta">
+                                Par <a href="#!">{{com.author}}</a>, le {{com.createdAt|format_datetime('medium', 'short', locale='fr')}}
+                            </span>
+                            <p>{{com.content}}</p>
+                            <form action="/comment/delete" method="post">
+                                <input type="hidden" name="postId" value="{{postId}}" />
+                                <input type="hidden" name="commentId" value="{{com.id}}" />
+                                <input type="submit" value="Delete" />
+                            </form>
+                            {% if not approved %}
+                                <form action="/comment/approve" method="post"> 
+                                    <input type="hidden" name="postId" value="{{postId}}" />
+                                    <input type="hidden" name="commentId" value="{{com.id}}" />
+                                    <input type="submit" value="Approve" />
+                                </form>
+                            {% endif %}
+                        </li>
+
+                    {# Comments shown for regular users #}
+                    {% else %} 
+                       
+                        {% if approved %} 
+                            <li>
+                                <span class="meta">
+                                    Par <a href="#!">{{com.author}}</a>, le {{com.createdAt|format_datetime('medium', 'short', locale='fr')}}
+                                </span>
+                                <p>{{com.content}}</p>
+                            </li>
+
+                        {# Allow the user to see his own 'waiting' comments #}
+                        {% elseif com.author is same as(session_username) %}
+                            <li class="comment-waiting">
+                                <span class="meta">
+                                    Par <a href="#!">{{com.author}}</a>, le {{com.createdAt|format_datetime('medium', 'short', locale='fr')}}
+                                    <br />
+                                    <small class="form-text text-muted"><em>(En attente de validation par un administrateur)</em></small>
+                                </span>
+                                <p class="text-muted">{{com.content}}</p>
+                            </li>
+
+                        {% endif %}
+                    {% endif %}
+
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

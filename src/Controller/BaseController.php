@@ -1,28 +1,15 @@
 <?php
 
 namespace App\Controller;
-use App\Model\Manager;
 
 abstract class BaseController 
 {
-    private $twig;
-    protected $db;
-
-    public function __construct()
-    {
-        $loader = new \Twig\Loader\FilesystemLoader('..\src\Views');
-        $this->twig = new \Twig\Environment($loader);
-
-        $this->db = new Manager();
-    }
-
+    // All controler use this function to render their twig templates
+    // We set sessions variables for twig (username, status) from here
     protected function render($template, $data)
     {
-        if(isset($_SESSION['username']))
-        {
-            $this->twig->addGlobal('session_username', $_SESSION['username']);
-        }
-
-        return $this->twig->render($template, $data);
+        $data['session_username'] = \App\Utils\Session::GetUsername();
+        $data['session_isAdmin'] = \App\Utils\Session::IsUserAdmin();
+        return \App\View\Twig::getInstance()->render($template, $data);
     }
 }

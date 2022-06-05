@@ -8,6 +8,7 @@ class Comment
     private $content;
     private $createdAt;
     private $author;
+    private $status;
 
     /************************/
     /** GETTERS AND SETTERS */
@@ -43,5 +44,13 @@ class Comment
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * Get the value of status
+     */ 
+    public function getStatus()
+    {
+        return $this->status;
     }
 }

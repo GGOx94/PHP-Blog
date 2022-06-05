@@ -1,0 +1,69 @@
+{% extends 'base.twig' %}
+{% block content %}
+<!-- Page Header-->
+<header class="masthead" style="max-height:100px">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>
+                        {{ title }}
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content-->
+<main class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+
+                <form action="/admin/edit" method="post">
+                    <input type="hidden" name="postId" value="0" />
+                    <input type="submit" value="Créer un post" />
+                </form>
+
+                {% for post in posts %}
+                    <div class="post-preview">
+                        <a href="/post/{{post.id}}">
+                            <h2 class="post-title">{{post.title}}</h2>
+                            <p class="post-meta">
+                                Par {{post.author}} le {{post.createdAt}}
+                            </p>
+                        </a>
+                        
+                        <form action="/admin/edit" method="post">
+                            <input type="hidden" name="postId" value="{{post.Id}}" />
+                            <input type="submit" value="Éditer" />
+                        </form>
+
+                        <form action="/admin/delete" method="post">
+                            <input type="hidden" name="postId" value="{{post.Id}}" />
+                            <input type="submit" value="Supprimer" />
+                        </form>
+
+                        {# WAITING FOR APPROVAL COMMENTS #}
+                        <p>
+                            total coms count : {{ post.comments|length }}
+                            {% set waitingCount = 0 %}
+                            {% for com in post.comments %}
+                                {% if com.status is same as('waiting_approval') %}
+                                    {% set waitingCount = waitingCount + 1 %}
+                                {% endif %}
+                            {% endfor %}
+                            / coms waiting count : {{ waitingCount }} (<a href="/post/{{post.id}}">view post</a>)
+                        </p>
+
+
+                        <hr class="my-4" />
+                    </p>
+                {% endfor %}
+                
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

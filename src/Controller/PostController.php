@@ -6,23 +6,29 @@ use RuntimeException;
 
 class PostController extends BaseController
 {
+    private $dbPosts;
+    private $dbComments;
+    
+    public function __construct()
+    {
+        $this->dbPosts = new \App\Model\PostManager();
+        $this->dbComments = new \App\Model\CommentManager();
+    }
+
     public function __invoke(array $args)
     {
-        if(!$args) {
-            throw new RuntimeException("Aucun ID de post précisé.");
-        }
-
-        $post = $this->db->getPostByID($args[0]);
+        $post = $this->dbPosts->getPostByID($args[0]);
         if(!$post) {
             throw new RuntimeException("Ce post n'existe pas.");
         }
 
-        $comments = $this->db->getCommentsOfPostID($args[0]);
+        $comments = $this->dbComments->getCommentsOfPostID($args[0]);
         
         $data = [
             'title' => $post->getTitle(),
             'post' => $post,
-            'comments' => $comments
+            'comments' => $comments,
+            'postId' => $args[0]
         ];
         
         return $this->render('post.twig', $data);

@@ -4,9 +4,16 @@ namespace App\Controller;
 
 class LoginController extends BaseController
 {
+    private $db;
+
+    public function __construct()
+    {
+        $this->db = new \App\Model\UserManager();
+    }
+
     public function __invoke()
     {
-        if (isset($_SESSION['username'])) {
+        if (\App\Utils\Session::IsLogged()) {
             return $this->displayPage('Bonjour, ' . $_SESSION['username']);
         }
 
@@ -14,11 +21,10 @@ class LoginController extends BaseController
             return $this->displayPage('Se connecter');
         }
 
-        if (isset($_POST['email']) && isset($_POST['password'])) {
-            return $this->loginUser($_POST['email'], $_POST['password']);
-        }
+        $email = \App\Utils\Post::GetOrThrow('email');
+        $password = \App\Utils\Post::GetOrThrow('password');
 
-        return $this->displayErrors();
+        return $this->loginUser($email, $password);
     }
 
     private function loginUser($email, $password)
@@ -27,9 +33,8 @@ class LoginController extends BaseController
 
         if ($user) // Success : User is logged-in, set session and redirect to homepage
         {
-            $_SESSION['username'] = $user->getName();
-            header('location: /');
-            return;
+            \App\Utils\Session::SetUserVars($user);
+            return header('location: /');
         }
 
         return $this->displayErrors();
@@ -43,8 +48,7 @@ class LoginController extends BaseController
 
     private function displayErrors()
     {
-        // Only one error possible in login : wrong email/password
-
+        // Only one error possible when trying to log in : wrong email or password
         $data = ['title' => 'Se connecter'];
         $data['error_messages'] = ["Mauvais email ou mot de passe."];
 

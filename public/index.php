@@ -2,42 +2,23 @@
 
 require '../vendor/autoload.php';
 
-define('__ROUTES__', require '../config/routes.php');
-
-function createController($path) : array
-{
-    foreach (__ROUTES__ as $uri => $route)
-    {
-        if (preg_match('`^' . $uri . '$`', $path, $groupMatches)) 
-        {
-            $params = null;
-
-            if(count($groupMatches) > 1)
-            {
-                $params = array_slice($groupMatches, 1);
-            }
-            
-            return [new $route(), $params];
-        }
-    }
-
-    throw new Exception('HTTP/1.0 404 Not Found');
-}
-
 try 
 {
     $req = createController($_SERVER['REQUEST_URI']);
 
-    session_start();
+    App\Utils\Session::Start();
 
+    if(isset($_POST['pouet']))
+    {
+        echo 'coucou';
+        exit(42);
+    }
+    
     $response = $req[0]($req[1]); // Call the _invoke of the controller with its potential args
-
-    if ($response) 
-    {
+    if ($response) {
         echo $response;
-    } 
-    else 
-    {
+    }
+    else {
         throw new Exception("Un problème est survenu avec le controller.");
     }
 } 
@@ -49,7 +30,27 @@ catch (Exception $e)
         exit(1);
     }
     
-    echo 'EXCEPTION TRIGGERED TO ROUTER : ' . $e->getMessage(); // Todo : customize runtime errors
+    // Todo : customize runtime errors
+    echo '<br/><p style="background-color:red;color:white">EXCEPTION TRIGGERED | ROUTER : ' . $e->getMessage() . '</p>'; 
 }
 
+function createController($path) : array
+{
+    foreach (\Config\Routes::get() as $uri => $controller)
+    {
+        if (preg_match('`^' . $uri . '$`', $path, $groupMatches)) 
+        {
+            $params = null;
 
+             // If we find any group matches : we have additional parameters
+            if(count($groupMatches) > 1) 
+            {
+                $params = array_slice($groupMatches, 1);
+            }
+            
+            return [new $controller(), $params];
+        }
+    }
+
+    throw new Exception('HTTP/1.0 404 Not Found');
+}

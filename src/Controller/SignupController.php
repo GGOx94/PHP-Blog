@@ -5,31 +5,33 @@ namespace App\Controller;
 class SignupController extends BaseController
 {
     private $errArr = [];
+    private $db;
+
+    public function __construct()
+    {
+        $this->db = new \App\Model\UserManager();
+    }
 
     public function __invoke()
     {
-        $pwd1 = $_POST['password'];
-        $pwd2 = $_POST['password-2'];
-        $name = $_POST['name'];
-        $email = $_POST['email'];
+        $pwd1 = \App\Utils\Post::GetOrThrow('password');
+        $pwd2 = \App\Utils\Post::GetOrThrow('password-2');
+        $name = \App\Utils\Post::GetOrThrow('name');
+        $email = \App\Utils\Post::GetOrThrow('email');
 
-        if($pwd1 !== $pwd2)
-        {
+        if($pwd1 !== $pwd2) {
             $this->errArr[] = "Les mots de passe ne correspondent pas.";
         }
 
-        if($this->db->checkUserExists($name))
-        {
+        if($this->db->checkUserExists($name)) {
             $this->errArr[] = "Ce pseudonyme est déjà utilisé.";
         }
 
-        if($this->db->checkEmailExists($email))
-        {
+        if($this->db->checkEmailExists($email)) {
             $this->errArr[] = "Cet e-mail est déjà enregistré.";
         }
         
-        if(count($this->errArr) > 0)
-        {
+        if(count($this->errArr) > 0) {
             return $this->displayErrors();
         }
 
@@ -52,9 +54,8 @@ class SignupController extends BaseController
 
         if ($user) // Success : User is logged-in, set session and redirect to homepage
         {
-            $_SESSION['username'] = $user->getName();
-            header('location: /');
-            return;
+            \App\Utils\Session::SetUserVars($user);
+            return header('location: /');
         }
 
         $this->errArr[] = "Un problème est survenu lors de l'enregistrement.";

@@ -6,12 +6,7 @@ class LogoutController extends BaseController
 {
     public function __invoke()
     {
-        if(isset($_SESSION['username']))
-        {
-            unset($_SESSION['username']);
-            session_destroy();
-        }
-        
+        \App\Utils\Session::Destroy();
         header('location: /');
     }
 }

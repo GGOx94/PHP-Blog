@@ -1,19 +1,24 @@
 <?php
 
-use App\Controller\HomeController;
-use App\Controller\PostsListController;
-use App\Controller\PostController;
-use App\Controller\LoginController;
-use App\Controller\LogoutController;
-use App\Controller\SignupController;
+namespace Config;
 
-return [
-    '/' => HomeController::class,
-    '/postsList' => PostsListController::class,
-    '/post' => PostController::class,
-    '/post/([0-9]+)' => PostController::class,
-    '/login' => LoginController::class,
-    '/logout' => LogoutController::class,
-    '/signup' => SignupController::class
-];
+class Routes 
+{
+    private static $_routes = [
+        '/'                 => \App\Controller\HomeController::class,
+        '/postsList'        => \App\Controller\PostsListController::class,
+        '/post/([0-9]+)'    => \App\Controller\PostController::class,
+        '/comment/([a-z]+)' => \App\Controller\CommentController::class,
+        '/login'            => \App\Controller\LoginController::class,
+        '/logout'           => \App\Controller\LogoutController::class,
+        '/signup'           => \App\Controller\SignupController::class,
+        '/admin'            => \App\Controller\AdminController::class,
+        '/admin/([a-z]+)'   => \App\Controller\AdminController::class
+    ];
+
+    public static function get() : array
+    {
+        return self::$_routes;
+    }
+}
 
