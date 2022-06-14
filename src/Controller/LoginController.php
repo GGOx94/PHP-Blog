@@ -29,15 +29,18 @@ class LoginController extends BaseController
 
     private function loginUser($email, $password)
     {
-        $user = $this->db->loginUser($email, $password);
+        $user = $this->db->getUserByCredentials($email, $password);
 
-        if ($user) // Success : User is logged-in, set session and redirect to homepage
-        {
-            \App\Utils\Session::SetUserVars($user);
-            return header('location: /');
+        if(!$user) {
+            return $this->displayError("Mauvais identifiant ou mot de passe");
         }
 
-        return $this->displayErrors();
+        if($user->getStatus() === 'signing_up') {
+            return $this->displayError("Vous n'avez pas activé votre compte, vérifiez votre boîte mail");
+        }
+
+        \App\Utils\Session::SetUserVars($user);
+        return header('location: /');
     }
 
     private function displayPage($title)
@@ -46,11 +49,10 @@ class LoginController extends BaseController
         return $this->render('login.twig', $data);
     }
 
-    private function displayErrors()
+    private function displayError(string $errMsg)
     {
-        // Only one error possible when trying to log in : wrong email or password
         $data = ['title' => 'Se connecter'];
-        $data['error_messages'] = ["Mauvais email ou mot de passe."];
+        $data['error_messages'] = [$errMsg];
 
         return $this->render('login.twig', $data);
     }

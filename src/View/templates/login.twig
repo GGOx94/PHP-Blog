@@ -20,26 +20,56 @@
 <div class="container px-4 px-lg-5">
 <div class="row gx-4 gx-lg-5 justify-content-center">
 
+{# User is already connected #}
 {% if session_username %}
 
-    <form class="col-md-5 col-lg-7 col-xl-6" action="logout" method="post">
-        <input class="form-control btn btn-danger" type="submit" value="Se déconnecter" />
-    </form>
+    <a class="row justify-content-center" href="/logout">
+        <button class="col-md-7 col-lg-7 col-xl-7 btn btn-danger">Se déconnecter</button>
+    </a>
     
+{# We sent a signup mail to the user #}
+{% elseif mail_sent %}
+
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-7 col-xl-7 alert alert-primary text-center">
+            <p> 
+                {{ name }}, un mail vous a été envoyé sur l'adresse : {{ email }}<br/>
+                Veuillez cliquer sur le lien contenu dans ce mail pour valider votre inscription.
+            </p>
+            <a class="row justify-content-center" href="/">
+                <button class="col-md-7 col-lg-7 col-xl-7 btn btn-info">Retour à l'accueil</button>
+            </a>
+        </div>
+    </div> 
+
+{# Default login & signup page forms #}
 {% else %}
 
-    {% if error_messages %}
+    {# User clicked a valid signup link in their email #}
+    {% if signup_success %}
+
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-7 col-xl-7 alert alert-success text-center">
+                Votre compte a bien été créé !<br/>
+                Vous pouvez dès à présent vous connecter avec vos identifiants.
+            </div>
+        </div> 
+
+    {# There was any error while trying to log-in or sign-up #}
+    {% elseif error_messages %}
+
         <div class="row justify-content-center">
         {% for errMsg in error_messages %}
             <div class="col-md-7 col-lg-7 col-xl-7 alert alert-danger text-center">
-                {{ errMsg }}
+                {{ errMsg|raw }}
             </div>
         {% endfor %}
         </div> 
+
     {% endif %}
 
-    <div class="col-md-5 col-lg-4 col-xl-3">
-        <!-- Login Form -->
+        {# - - - Login Form - - - #}
+        <div class="col-md-5 col-lg-4 col-xl-3">
         <form id="loginForm" action="/login" method="post" data-sb-form-api-token="">
             <div class="form-floating">
                 <input class="form-control" id="email" name="email" type="email" placeholder="Votre email" data-sb-validations="required,email" />
@@ -61,8 +91,8 @@
         </form>
         </div>
 
+        {# - - - Sign-up Form - - - #}
         <div class="col-md-5 col-lg-4 col-xl-3">
-        <!-- Sign-up Form -->
         <form id="signupForm" action="/signup" method="post" data-sb-form-api-token="">
             <div class="form-floating">
                 <input class="form-control" id="name-signup" name="name" placeholder="Votre pseudo" data-sb-validations="required" />
@@ -90,7 +120,7 @@
             <div class="d-none" id="submitSuccessMessage"></div>
             <div class="d-none" id="submitErrorMessage"></div>
             <button class="d-none" id="submitButton" type="submit"></button>
-            <input type="submit" class="btn btn-primary text-uppercase" value="S'enregistrer">
+            <input type="submit" class="btn btn-primary text-uppercase" value="Créer un compte">
         </form>
         </div>
 
@@ -102,7 +132,5 @@
 </div>
 </div>
 </main>
-
-
 
 {% endblock %}

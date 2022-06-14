@@ -7,8 +7,7 @@ class User
     private $name;
     private $email;
     private $status;
-
-    //TODO constructor when registering user
+    private $password;
 
     /************************/
     /** GETTERS AND SETTERS */
@@ -36,5 +35,13 @@ class User
     public function getStatus()
     {
         return $this->status;
+    }
+
+     /**
+     * Get the value of password
+     */ 
+    public function getPassword()
+    {
+        return $this->password;
     }
 }
