@@ -8,12 +8,6 @@ try
 
     App\Utils\Session::Start();
 
-    if(isset($_POST['pouet']))
-    {
-        echo 'coucou';
-        exit(42);
-    }
-    
     $response = $req[0]($req[1]); // Call the _invoke of the controller with its potential args
     if ($response) {
         echo $response;
@@ -31,7 +25,7 @@ catch (Exception $e)
     }
     
     // Todo : customize runtime errors
-    echo '<br/><p style="background-color:red;color:white">EXCEPTION TRIGGERED | ROUTER : ' . $e->getMessage() . '</p>'; 
+    echo '<p style="background-color:red;color:white">EXCEPTION TRIGGERED | ROUTER : ' . $e->getMessage() . '</p>'; 
 }
 
 function createController($path) : array
@@ -42,7 +36,7 @@ function createController($path) : array
         {
             $params = null;
 
-             // If we find any group matches : we have additional parameters
+            // If we find more than one group matches : we have additional parameters
             if(count($groupMatches) > 1) 
             {
                 $params = array_slice($groupMatches, 1);

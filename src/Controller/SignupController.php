@@ -2,6 +2,12 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mime\Email;
+
+use App\View\Twig;
+
 class SignupController extends BaseController
 {
     private $errArr = [];
@@ -12,8 +18,28 @@ class SignupController extends BaseController
         $this->db = new \App\Model\UserManager();
     }
 
-    public function __invoke()
+    public function __invoke($args)
     {
+        if(isset($args[0])) // if any args[0] : it should be a token from a registration link
+        {
+            $token = $args[0];
+            if(!$this->db->isTokenValid($token)) 
+            {
+                $this->errArr[] = "Le jeton d'enregistrement a expiré ou est invalide.<br/>
+                Si vous souhaitiez créer un compte, essayez à nouveau.";
+                return $this->displayErrors();
+            }
+
+            $rslt = $this->db->registerUser($token);
+            if(!$rslt) 
+            {
+                $this->errArr[] = "Un problème est survenu lors de l'enregistrement.";
+                return $this->displayErrors();
+            }
+
+            return $this->displaySuccess();
+        }
+
         $pwd1 = \App\Utils\Post::GetOrThrow('password');
         $pwd2 = \App\Utils\Post::GetOrThrow('password-2');
         $name = \App\Utils\Post::GetOrThrow('name');
@@ -35,31 +61,56 @@ class SignupController extends BaseController
             return $this->displayErrors();
         }
 
-        $this->registerUser($name, $email, $pwd1);
+        $token = $this->db->preRegisterUser($name, $email, $pwd1);
+        $this->sendRegistrationMail($name, $email, $token);
+        return $this->displayMailSent($name, $email);
     }
 
-    private function registerUser($name, $email, $pwd)
+    private function sendRegistrationMail(string $name, string $email, string $token) 
     {
-        //TODO TMP : register & login user right away for now, but we need a proper mailer registration
+        $transport = Transport::fromDsn(\Config\Config::get('mailer_dsn'));
+        $mailer = new Mailer($transport);
 
-        $rslt = $this->db->registerUser($name, $email, $pwd);
+        // Create the data array of twig variables for the mail HTML template
+        $siteUrl = \Config\Config::get('site_base_url');
+        $signupUrl = $siteUrl . '/signup/' . $token;
+        $data = [
+            'name' => $name,
+            'token' => $token,
+            'siteUrl' => $siteUrl,
+            'signupUrl' => $signupUrl
+        ];
 
-        if(!$rslt)
-        {
-            $this->errArr[] = "Un problème est survenu lors de l'enregistrement.";
-            return $this->displayErrors();
-        }
+        $mail = (new Email())
+            ->from('noreply@p5phpblog.net')
+            ->to($email)
+            ->subject('[Amazing Blog] Création de compte : ' . $name)
+            ->text('Suivez ce lien pour valider l\'enregistrement de votre compte : ' . $signupUrl)
+            ->html(Twig::getInstance()->render('mailSignup.twig', $data)); 
 
-        $user = $this->db->loginUser($email, $pwd);
+        $mailer->send($mail);
+    }
 
-        if ($user) // Success : User is logged-in, set session and redirect to homepage
-        {
-            \App\Utils\Session::SetUserVars($user);
-            return header('location: /');
-        }
+    private function displayMailSent($name, $email) 
+    {
+        $data = [
+            'title' => 'Mail de confirmation envoyé !',
+            'mail_sent' => true,
+            'name' => $name,
+            'email' => $email
+        ];
 
-        $this->errArr[] = "Un problème est survenu lors de l'enregistrement.";
-        return $this->displayErrors();
+        return $this->render('login.twig', $data);
+    }
+
+    private function displaySuccess() 
+    {
+        $data = [
+            'title' => 'Bienvenu !',
+            'signup_success' => true
+        ];
+
+        return $this->render('login.twig', $data);
     }
 
     private function displayErrors()
