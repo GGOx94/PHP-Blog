@@ -4,7 +4,7 @@ require '../vendor/autoload.php';
 
 try 
 {
-    $req = createController($_SERVER['REQUEST_URI']);
+    $req = App\Controller\BaseController::CreateFromUri($_SERVER['REQUEST_URI']);
 
     App\Utils\Session::Start();
 
@@ -13,38 +13,10 @@ try
         echo $response;
     }
     else {
-        throw new Exception("Un problème est survenu avec le controller.");
+        throw new Exception("Un problème est survenu avec la page.");
     }
 } 
 catch (Exception $e) 
 {
-    if(str_contains($e, 'HTTP/1.0'))
-    {
-        header($e->getMessage()); // Todo : customize 404/403/... errors
-        exit(1);
-    }
-    
-    // Todo : customize runtime errors
-    echo '<p style="background-color:red;color:white">EXCEPTION TRIGGERED | ROUTER : ' . $e->getMessage() . '</p>'; 
-}
-
-function createController($path) : array
-{
-    foreach (\Config\Routes::get() as $uri => $controller)
-    {
-        if (preg_match('`^' . $uri . '$`', $path, $groupMatches)) 
-        {
-            $params = null;
-
-            // If we find more than one group matches : we have additional parameters
-            if(count($groupMatches) > 1) 
-            {
-                $params = array_slice($groupMatches, 1);
-            }
-            
-            return [new $controller(), $params];
-        }
-    }
-
-    throw new Exception('HTTP/1.0 404 Not Found');
+    echo App\Controller\ErrorController::Display($e);
 }
