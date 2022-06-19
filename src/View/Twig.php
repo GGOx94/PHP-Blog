@@ -4,9 +4,9 @@ namespace App\View;
 
 class Twig 
 {
-    private static $_twig;
+    private static \Twig\Environment $_twig;
 
-    public static function getInstance()
+    public static function getInstance() : \Twig\Environment
     {
         if (!isset(self::$_twig)) 
         {

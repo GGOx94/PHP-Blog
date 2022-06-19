@@ -21,7 +21,7 @@ class AdminController extends BaseController
     {
         // Critical section: refresh session id by checking IsLogged and verify the user is an administrator
         if(!\App\Utils\Session::IsLogged() || !\App\Utils\Session::IsUserAdmin()) {
-            throw new Exception('Vous devez être administrateur pour accéder à cette page.');
+            throw new \Exception('HTTP/1.0 403 Forbidden');
         }
 
         // Admin panel requested with simple '/admin' URI
