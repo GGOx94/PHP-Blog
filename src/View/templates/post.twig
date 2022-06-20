@@ -6,7 +6,7 @@
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
-                <div class="post-heading">
+                <div class="post-heading text-center">
                     <h1>
                         {{title}}
                     </h1>
@@ -49,7 +49,7 @@
                     <input type="hidden" name="postId" value="{{postId}}">
                     <br />
                     <div class="row justify-content-center">
-                        <input type="submit" id="submitButton" class="col-md-3 col-sm-6 btn btn-primary text-uppercase" value='Envoyer'>
+                        <input type="submit" id="submitButton" class="col-md-3 col-sm-6 btn btn-primary text-uppercase rounded" value='Envoyer'>
                     </div> 
                 </form>
                 
@@ -65,23 +65,31 @@
 
                     {# Comments and commands shown for admins #}
                     {% if session_isAdmin %} 
-                        <li class="comment-{{ approved ? "approved" : "waiting"}}">
+                        <li class="alert alert-{{ approved ? "success" : "warning"}} rounded">
                             <span class="meta">
                                 Par <a href="#!">{{com.author}}</a>, le {{com.createdAt|format_datetime('medium', 'short', locale='fr')}}
                             </span>
                             <p>{{com.content}}</p>
-                            <form action="/comment/delete" method="post">
-                                <input type="hidden" name="postId" value="{{postId}}" />
-                                <input type="hidden" name="commentId" value="{{com.id}}" />
-                                <input type="submit" value="Delete" />
-                            </form>
-                            {% if not approved %}
-                                <form action="/comment/approve" method="post"> 
+                            <div class="form-buttons">
+                                {% if not approved %}
+                                    <form action="/comment/approve" method="post"> 
+                                        <input type="hidden" name="postId" value="{{postId}}" />
+                                        <input type="hidden" name="commentId" value="{{com.id}}" />
+                                        <input class="btn btn-success rounded"
+                                            type="submit" value="Approve" />
+                                    </form>
+                                {% else %}
+                                    <button class="btn border border-secondary rounded" disabled>Validé</button>
+                                {% endif %}
+                                <form action="/comment/delete" method="post">
                                     <input type="hidden" name="postId" value="{{postId}}" />
                                     <input type="hidden" name="commentId" value="{{com.id}}" />
-                                    <input type="submit" value="Approve" />
+                                    <input class="btn btn-danger rounded"
+                                        type="submit" value="Delete" 
+                                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');"/>
                                 </form>
-                            {% endif %}
+                                
+                            </div>
                         </li>
 
                     {# Comments shown for regular users #}
@@ -97,7 +105,7 @@
 
                         {# Allow the user to see his own 'waiting' comments #}
                         {% elseif com.author is same as(session_username) %}
-                            <li class="comment-waiting">
+                            <li class="alert alert-warning rounded">
                                 <span class="meta">
                                     Par <a href="#!">{{com.author}}</a>, le {{com.createdAt|format_datetime('medium', 'short', locale='fr')}}
                                     <br />

@@ -21,45 +21,62 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
 
-                <form action="/admin/edit" method="post">
-                    <input type="hidden" name="postId" value="0" />
-                    <input type="submit" value="Créer un post" />
-                </form>
+                <a class="row justify-content-center" href="/admin/edit">
+                    <button class="col-md-7 col-lg-7 col-xl-7 btn btn-primary rounded">Nouveau Post</button>
+                </a>
+
+                <hr class="my-4" />
 
                 {% for post in posts %}
-                    <div class="post-preview">
-                        <a href="/post/{{post.id}}">
-                            <h2 class="post-title">{{post.title}}</h2>
+                        <div class="post-preview text-center">
+                            <a href="/post/{{post.id}}">
+                                <h2 class="post-title" style="margin-top:0;">{{post.title}}</h2>
+                            </a>
                             <p class="post-meta">
-                                Par {{post.author}} le {{post.createdAt}}
+                                Par <a href="#0">{{post.author}}</a> le {{post.createdAt}}
                             </p>
-                        </a>
-                        
-                        <form action="/admin/edit" method="post">
-                            <input type="hidden" name="postId" value="{{post.Id}}" />
-                            <input type="submit" value="Éditer" />
-                        </form>
+                            
 
-                        <form action="/admin/delete" method="post">
-                            <input type="hidden" name="postId" value="{{post.Id}}" />
-                            <input type="submit" value="Supprimer" />
-                        </form>
-
-                        {# WAITING FOR APPROVAL COMMENTS #}
-                        <p>
-                            total coms count : {{ post.comments|length }}
+                            {# WAITING FOR APPROVAL COMMENTS COUNT #}
                             {% set waitingCount = 0 %}
                             {% for com in post.comments %}
                                 {% if com.status is same as('waiting_approval') %}
                                     {% set waitingCount = waitingCount + 1 %}
                                 {% endif %}
                             {% endfor %}
-                            / coms waiting count : {{ waitingCount }} (<a href="/post/{{post.id}}">view post</a>)
-                        </p>
+                            {% if waitingCount > 0 %}
 
+                                <div class="border border-secondary rounded alert alert-warning">
+                                    <a href="/post/{{post.id}}">
+                                        Commentaires en attente : <strong>{{ waitingCount }}</strong>
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="border border-success rounded alert alert-success">
+                                    Aucun commentaire en attente
+                                </div>
+                            {% endif %}
+                            
+                        </div>
 
-                        <hr class="my-4" />
-                    </p>
+                        <div class="form-buttons">
+                            <form action="/admin/edit" method="post">
+                                <input type="hidden" name="postId" value="{{post.Id}}" />
+                                <input class="btn btn-info rounded" type="submit" value="Éditer" />
+                            </form>
+
+                            <a class="" href="/post/{{post.Id}}">
+                                <button class="btn btn-primary rounded">Voir</button>
+                            </a>
+
+                            <form action="/admin/delete" method="post">
+                                <input type="hidden" name="postId" value="{{post.Id}}" />
+                                <input class="btn btn-danger rounded" type="submit" value="Supprimer" 
+                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer : \n{{ post.title }}?');"/>
+                            </form>
+                        </div>
+                        
+                    <hr class="my-4" />
                 {% endfor %}
                 
             </div>
