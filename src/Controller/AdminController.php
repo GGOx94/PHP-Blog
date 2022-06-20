@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use Exception;
-
 class AdminController extends BaseController
 {
     private \App\Model\CommentManager $dbComments;
@@ -29,13 +27,13 @@ class AdminController extends BaseController
             return $this->displayAdminPanel();
         }
 
-        // An action has been requested, from here, we'll need a postId
-        $postId = \App\Utils\Post::GetOrThrow('postId', true); 
+        // An action has been requested via uri : /admin/[ACTION]
+        $postId = \App\Utils\Post::GetOrNull('postId', true); 
 
         switch($action[0])
         {
             case 'delete':
-                return $this->deletePost($postId); // TODO "are you sure ?"
+                return $this->deletePost($postId);
 
             case 'edit':
                 return $this->displayAdminPost($postId);
@@ -45,7 +43,7 @@ class AdminController extends BaseController
                 return $postId == 0 ? $this->createPost($post) : $this->updatePost($post);
 
             default:
-                $this->throwBadAction();
+                throw new \Exception('Action demandée invalide.');
         }
 
     }
@@ -67,15 +65,8 @@ class AdminController extends BaseController
     private function displayAdminPost($postId)
     {
         $data = array();
-        $post = $this->dbPosts->getPostByID($postId);
-        
-        if($post === false)  {
-            $data['title'] = 'Créer un Post';
-        }
-        else {
-            $data['title'] = 'Éditer un Post';
-            $data['post'] = $post;
-        }
+        $data['title'] = $postId ? 'Éditer un Post' : 'Créer un Post';
+        $data['post'] = $postId ? $this->dbPosts->getPostByID($postId) : null;
         
         return $this->render('adminPost.twig', $data);
     }
@@ -84,7 +75,7 @@ class AdminController extends BaseController
     {
         $rslt = $this->dbPosts->updatePost($post);
         if(!$rslt) {
-            throw new Exception('La mise à jour du Post a rencontré un problème.');
+            throw new \Exception('La mise à jour du Post a rencontré un problème.');
         }
 
         header('location: /post/' . $post->getId());
@@ -94,7 +85,7 @@ class AdminController extends BaseController
     {
         $newPostId = $this->dbPosts->createPost($post, \App\Utils\Session::GetUsername());
         if($newPostId == null) {
-            throw new Exception('La création du Post a rencontré un problème.');
+            throw new \Exception('La création du Post a rencontré un problème.');
         }
 
         header('location: /post/' . $newPostId);
@@ -104,7 +95,7 @@ class AdminController extends BaseController
     {
         $rslt = $this->dbPosts->deletePost($postId);
         if(!$rslt) {
-            throw new Exception('La suppression du Post a rencontré un problème.');
+            throw new \Exception('La suppression du Post a rencontré un problème.');
         }
 
         return $this->displayAdminPanel();
@@ -118,10 +109,5 @@ class AdminController extends BaseController
         $post->setHead(\App\Utils\Post::GetOrThrow('head'));
         $post->setContent(\App\Utils\Post::GetOrThrow('content')); 
         return $post;
-    }
-
-    private function throwBadAction()
-    {
-        throw new Exception('Action demandée invalide.');
     }
 }

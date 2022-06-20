@@ -20,8 +20,12 @@ class PostManager extends BaseManager
         return $result;
     }
 
-    public function getPostByID($postID)
-    {
+    public function getPostByID(int $postID)
+    {   
+        if(!$postID) {
+            return null;
+        }
+
         $req = $this->getCnx()->prepare(
                 'SELECT p.id, p.title, p.head, p.content, p.creation_date createdAt, p.modification_date modifiedAt,
                         u.name author
@@ -39,7 +43,11 @@ class PostManager extends BaseManager
                 'INSERT INTO post (title, head, content, creation_date, fk_user_name)
                 VALUES (?, ?, ?, now(), ?);');
 
-        $rslt = $req->execute(array($post->getTitle(), $post->getHead(), $post->getContent(), $userName));
+        $rslt = $req->execute(array(
+                $post->getTitle(), 
+                $post->getHead(), 
+                $post->getContent(), 
+                $userName));
 
         return $rslt ? $this->getCnx()->lastInsertId() : null;
     }
@@ -56,7 +64,7 @@ class PostManager extends BaseManager
         return $rslt;
     }
 
-    public function deletePost($postId)
+    public function deletePost(int $postId) : bool
     {
         $req = $this->getCnx()->prepare('DELETE FROM post WHERE id = ?');
         

@@ -25,7 +25,7 @@
                 {% set pHeader = post ? post.head : 'Chapô du Post' %}
                 {% set pContent = post ? post.content : 'Contenu du Post' %}
 
-                <form action="/admin/post" method="post">
+                <form class="justify-content-center" action="/admin/post" method="post">
                     <input type="hidden" name="postId" value="{{post ? post.id : 0}}" />
                     <input class="form-control" name="title" type="text" placeholder="{{pTitle}}" value="{{post ? pTitle : ''}}"/>
                     <textarea class="form-control" name="head" placeholder="{{pHeader}}" style="height: 6rem">{{post ? pHeader : ''}}</textarea>
