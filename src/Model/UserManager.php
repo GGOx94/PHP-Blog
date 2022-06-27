@@ -4,7 +4,7 @@ namespace App\Model;
 
 class UserManager extends BaseManager
 {
-    public function getUserByCredentials($email, $password) : User
+    public function getUserByCredentials(string $email, string $password) : User
     {
         $pwdHash = $this->getHash($password);
 
@@ -18,7 +18,7 @@ class UserManager extends BaseManager
         return !$rslt ? false : $req->fetch();
     }
 
-    public function registerUser(string $token)
+    public function registerUser(string $token) : bool
     {
         $userStatus = 'visitor';
 
@@ -28,21 +28,21 @@ class UserManager extends BaseManager
         return $rslt;
     }
 
-    public function checkUserExists($username)
+    public function checkUserExists(string $username) : bool
     {
         $req = $this->getCnx()->prepare('SELECT * FROM user u WHERE u.name = ?');
         $req->execute(array($username));
         return $req->fetch() ? true : false;
     }
 
-    public function checkEmailExists($email)
+    public function checkEmailExists(string $email) : bool
     {
         $req = $this->getCnx()->prepare('SELECT * FROM user u WHERE u.email = ?');
         $req->execute(array($email));
         return $req->fetch() ? true : false;
     }
 
-    public function isUserAdmin($username)
+    public function isUserAdmin(string $username) : bool
     {
         $req = $this->getCnx()->prepare('SELECT u.fk_user_status FROM user u WHERE u.name = ?');
         $req->execute(array($username));
@@ -53,7 +53,7 @@ class UserManager extends BaseManager
     /*** USER TOKEN & REGISTRATION ***/
     /*************************************************************************/
 
-    public function preRegisterUser($name, $email, $password) : string
+    public function preRegisterUser(string $name, string $email, string $password) : string
     {
         // Generate a token of random 64 hexadecimal characters string
         $token = bin2hex(random_bytes(32)); 
@@ -72,7 +72,7 @@ class UserManager extends BaseManager
         return $token;
     }
 
-    public function isTokenValid($token) : bool 
+    public function isTokenValid(string $token) : bool 
     {
         // Check if token exists for a "signing_up" user
         $userStatus = "signing_up";

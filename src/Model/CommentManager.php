@@ -6,7 +6,7 @@ use DateTime;
 
 class CommentManager extends BaseManager
 {
-    public function getCommentsOfPostID($postId)
+    public function getCommentsOfPostID(int $postId) : array
     {
         $req = $this->getCnx()->prepare(
                 'SELECT c.id, c.content, c.creation_date createdAt, c.fk_comment_status status,
@@ -22,7 +22,7 @@ class CommentManager extends BaseManager
         return $result;
     }
 
-    public function addOnPostID(int $postId, string $comment, string $username, bool $isAdmin)
+    public function addOnPostID(int $postId, string $comment, string $username, bool $isAdmin) : bool
     {
         $status = $isAdmin ? 'approved' : 'waiting_approval';
         $req = $this->getCnx()->prepare(
@@ -32,7 +32,7 @@ class CommentManager extends BaseManager
         return $req->execute(array($postId, $username, $status, $comment));
     }
 
-    public function deleteById(int $commentId)
+    public function deleteById(int $commentId) : bool
     {
         $req = $this->getCnx()->prepare(
                 'DELETE FROM comment WHERE id = ?');
@@ -41,7 +41,7 @@ class CommentManager extends BaseManager
         return $rslt ? $req->rowCount() > 0 : false;
     }
 
-    public function approveById(int $commentId)
+    public function approveById(int $commentId) : bool
     {
         $req = $this->getCnx()->prepare(
             'UPDATE comment SET fk_comment_status = "approved" WHERE id = ?');

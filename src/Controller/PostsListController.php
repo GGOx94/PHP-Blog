@@ -11,10 +11,10 @@ class PostsListController extends BaseController
         $this->db = new \App\Model\PostManager();
     }
 
-    public function __invoke()
+    public function __invoke() : string
     {
         $data = [
-            'title' => 'Les posts du Blog',
+            'title' => 'Les Posts du Blog',
             'posts' => $this->db->getAllPosts()
         ];
 

@@ -4,14 +4,14 @@ namespace App\Controller;
 
 class LoginController extends BaseController
 {
-    private $db;
+    private \App\Model\UserManager $db;
 
     public function __construct()
     {
         $this->db = new \App\Model\UserManager();
     }
 
-    public function __invoke()
+    public function __invoke() : ?string
     {
         if (\App\Utils\Session::IsLogged()) {
             return $this->displayPage('Bonjour, ' . $_SESSION['username']);
@@ -27,7 +27,7 @@ class LoginController extends BaseController
         return $this->loginUser($email, $password);
     }
 
-    private function loginUser($email, $password)
+    private function loginUser(string $email, string $password) : ?string
     {
         $user = $this->db->getUserByCredentials($email, $password);
 
@@ -43,13 +43,13 @@ class LoginController extends BaseController
         return header('location: /');
     }
 
-    private function displayPage($title)
+    private function displayPage(string $title) : string
     {
         $data = ['title' => $title];
         return $this->render('login.twig', $data);
     }
 
-    private function displayError(string $errMsg)
+    private function displayError(string $errMsg) : string
     {
         $data = ['title' => 'Se connecter'];
         $data['error_messages'] = [$errMsg];

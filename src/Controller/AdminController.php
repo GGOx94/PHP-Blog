@@ -15,7 +15,7 @@ class AdminController extends BaseController
         $this->dbUsers = new \App\Model\UserManager();
     }
 
-    public function __invoke($action)
+    public function __invoke($action) : string
     {
         // Critical section: refresh session id by checking IsLogged and verify the user is an administrator
         if(!\App\Utils\Session::IsLogged() || !\App\Utils\Session::IsUserAdmin()) {
@@ -48,7 +48,7 @@ class AdminController extends BaseController
 
     }
 
-    private function displayAdminPanel()
+    private function displayAdminPanel() : string
     {
         // Get all posts, then build their $comments array
         $posts = $this->dbPosts->getAllPosts();
@@ -62,7 +62,7 @@ class AdminController extends BaseController
         return $this->render('adminPanel.twig', $data);
     }
 
-    private function displayAdminPost($postId)
+    private function displayAdminPost(?int $postId) : string
     {
         $data = array();
         $data['title'] = $postId ? 'Éditer un Post' : 'Créer un Post';
@@ -71,7 +71,7 @@ class AdminController extends BaseController
         return $this->render('adminPost.twig', $data);
     }
 
-    private function updatePost(\App\Model\Post $post)
+    private function updatePost(\App\Model\Post $post) : void
     {
         $rslt = $this->dbPosts->updatePost($post);
         if(!$rslt) {
@@ -81,7 +81,7 @@ class AdminController extends BaseController
         header('location: /post/' . $post->getId());
     }
 
-    private function createPost(\App\Model\Post $post)
+    private function createPost(\App\Model\Post $post) : void
     {
         $newPostId = $this->dbPosts->createPost($post, \App\Utils\Session::GetUsername());
         if($newPostId == null) {
@@ -91,7 +91,7 @@ class AdminController extends BaseController
         header('location: /post/' . $newPostId);
     }
 
-    private function deletePost(int $postId)
+    private function deletePost(int $postId) : string
     {
         $rslt = $this->dbPosts->deletePost($postId);
         if(!$rslt) {
@@ -101,7 +101,7 @@ class AdminController extends BaseController
         return $this->displayAdminPanel();
     }
 
-    private function buildPostInstance($postId) 
+    private function buildPostInstance(?int $postId) : \App\Model\Post
     {
         $post = new \App\Model\Post();
         $post->setId($postId);

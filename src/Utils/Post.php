@@ -22,10 +22,10 @@ class Post
         return $value;
     }
 
-    public static function GetOrNull($varname, $isID = false) : ?string
+    public static function GetOrNull($varname, $isNum = false) : ?string
     {
         try {
-            return self::GetOrThrow($varname, $isID);
+            return self::GetOrThrow($varname, $isNum);
         }
         catch(Exception $e) {
             return null;

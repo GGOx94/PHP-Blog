@@ -18,15 +18,15 @@ class SignupController extends BaseController
         $this->db = new \App\Model\UserManager();
     }
 
-    public function __invoke($args)
+    public function __invoke(?array $args) : string
     {
-        if(isset($args[0])) // if any args[0] : it should be a token from a registration link
+        if(isset($args[0])) // then arg[0] is a token from a registration link
         {
             $token = $args[0];
             if(!$this->db->isTokenValid($token)) 
             {
                 $this->errArr[] = "Le jeton d'enregistrement a expiré ou est invalide.<br/>
-                Si vous souhaitiez créer un compte, essayez à nouveau.";
+                    Si vous souhaitiez créer un compte, essayez à nouveau.";
                 return $this->displayErrors();
             }
 
@@ -66,7 +66,7 @@ class SignupController extends BaseController
         return $this->displayMailSent($name, $email);
     }
 
-    private function sendRegistrationMail(string $name, string $email, string $token) 
+    private function sendRegistrationMail(string $name, string $email, string $token) : void
     {
         $transport = Transport::fromDsn(\Config\Config::get('mailer_dsn'));
         $mailer = new Mailer($transport);
@@ -91,7 +91,7 @@ class SignupController extends BaseController
         $mailer->send($mail);
     }
 
-    private function displayMailSent($name, $email) 
+    private function displayMailSent(string $name, string $email) : string
     {
         $data = [
             'title' => 'Mail de confirmation envoyé !',
@@ -103,7 +103,7 @@ class SignupController extends BaseController
         return $this->render('login.twig', $data);
     }
 
-    private function displaySuccess() 
+    private function displaySuccess() : string
     {
         $data = [
             'title' => 'Bienvenu !',
@@ -113,7 +113,7 @@ class SignupController extends BaseController
         return $this->render('login.twig', $data);
     }
 
-    private function displayErrors()
+    private function displayErrors() : string
     {
         $data = [
             'title' => 'Se connecter',

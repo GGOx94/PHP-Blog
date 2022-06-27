@@ -2,13 +2,13 @@
 
 namespace App\View;
 
-class Twig 
+class Twig
 {
     private static \Twig\Environment $_twig;
 
     public static function getInstance() : \Twig\Environment
     {
-        if (!isset(self::$_twig)) 
+        if (!isset(self::$_twig))
         {
             $loader = new \Twig\Loader\FilesystemLoader('..\src\View\templates');
             self::$_twig = new \Twig\Environment($loader);

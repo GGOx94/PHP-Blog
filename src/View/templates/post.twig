@@ -76,7 +76,7 @@
                                         <input type="hidden" name="postId" value="{{postId}}" />
                                         <input type="hidden" name="commentId" value="{{com.id}}" />
                                         <input class="btn btn-success rounded"
-                                            type="submit" value="Approve" />
+                                            type="submit" value="Valider" />
                                     </form>
                                 {% else %}
                                     <button class="btn border border-secondary rounded" disabled>Validé</button>
@@ -85,7 +85,7 @@
                                     <input type="hidden" name="postId" value="{{postId}}" />
                                     <input type="hidden" name="commentId" value="{{com.id}}" />
                                     <input class="btn btn-danger rounded"
-                                        type="submit" value="Delete" 
+                                        type="submit" value="Supprimer" 
                                         onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');"/>
                                 </form>
                                 

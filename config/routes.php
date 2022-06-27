@@ -22,4 +22,3 @@ class Routes
         return self::$_routes;
     }
 }
-
