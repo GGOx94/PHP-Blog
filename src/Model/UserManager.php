@@ -14,7 +14,7 @@ class UserManager extends BaseManager
                 WHERE u.email = ? AND u.password = ?');
 
         $req->setFetchMode(\PDO::FETCH_CLASS, User::class);
-        
+
         if(!$req->execute(array($email, $pwdHash))) {
             return null;
         }
@@ -28,6 +28,42 @@ class UserManager extends BaseManager
         $req = $this->getCnx()->prepare('SELECT u.email FROM user u WHERE u.name = ?');
         $req->execute(array($name));
         return $req->fetch()[0];
+    }
+
+    public function getRegularUsers() : array
+    {
+        $req = $this->getCnx()->prepare(
+            'SELECT name, email, fk_user_status as status FROM user 
+            where fk_user_status = "visitor" OR fk_user_status = "banned"
+            ORDER BY name'
+        );
+
+        $req->setFetchMode(\PDO::FETCH_CLASS, User::class);
+
+        if(!$req->execute()) {
+            return [];
+        }
+
+        $rslt = $req->fetchAll();
+        return !$rslt ? [] : $rslt;
+    }
+
+    public function banUser(string $name) : bool
+    {
+        $req = $this->getCnx()->prepare(
+            'UPDATE user SET fk_user_status = "banned" WHERE name = ?'
+        );
+
+        return $req->execute(array($name));
+    }
+
+    public function unbanUser(string $name) : bool
+    {
+        $req = $this->getCnx()->prepare(
+            'UPDATE user SET fk_user_status = "visitor" WHERE name = ?'
+        );
+        
+        return $req->execute(array($name));
     }
 
     public function registerUser(string $token)
