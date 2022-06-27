@@ -21,10 +21,15 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
 
-                <a class="row justify-content-center" href="/admin/edit">
-                    <button class="col-md-7 col-lg-7 col-xl-7 btn btn-primary rounded">Nouveau Post</button>
-                </a>
-
+                <div class="row justify-content-center">
+                    <a class="col-md-4 col-sm-4" href="/admin/users">
+                        <button class="btn btn-primary rounded">Utilisateurs</button>
+                    </a>
+                    <a class="col-md-4 col-sm-4 col-px-4" href="/admin/edit">
+                        <button class="btn btn-primary rounded">Nouveau Post</button>
+                    </a>
+                </div>
+                
                 <hr class="my-4" />
 
                 {% for post in posts %}

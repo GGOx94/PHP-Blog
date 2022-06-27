@@ -36,9 +36,7 @@ class ContactController extends BaseController
     {
         $transport = Transport::fromDsn(\Config\Config::get('mailer_dsn'));
         $mailer = new Mailer($transport);
-
-        $message = str_replace("\n", "<br/>", $message);
-
+        
         $data = [
             'name' => $name,
             'email' => $email,

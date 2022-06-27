@@ -20,7 +20,7 @@ class PostManager extends BaseManager
         return $result;
     }
 
-    public function getPostByID(int $postID)
+    public function getPostByID(int $postID) : ?Post
     {   
         if(!$postID) {
             return null;
