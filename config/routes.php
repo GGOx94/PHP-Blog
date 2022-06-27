@@ -14,7 +14,8 @@ class Routes
         '/signup'                   => \App\Controller\SignupController::class,
         '/signup/([a-f0-9]{64})'    => \App\Controller\SignupController::class,
         '/admin'                    => \App\Controller\AdminController::class,
-        '/admin/([a-z]+)'           => \App\Controller\AdminController::class
+        '/admin/([a-z]+)'           => \App\Controller\AdminController::class,
+        '/contact'                  => \App\Controller\ContactController::class
     ];
 
     public static function get() : array
