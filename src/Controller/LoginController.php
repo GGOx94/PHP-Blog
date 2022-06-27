@@ -35,6 +35,10 @@ class LoginController extends BaseController
             return $this->displayError("Mauvais identifiant ou mot de passe");
         }
 
+        if($user->getStatus() === 'banned') {
+            return $this->displayError("Ce compte a été banni par un administrateur.");
+        }
+
         if($user->getStatus() === 'signing_up') {
             return $this->displayError("Vous n'avez pas activé votre compte, vérifiez votre boîte mail");
         }

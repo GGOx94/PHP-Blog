@@ -25,7 +25,7 @@
 <div class="row gx-4 gx-lg-5 justify-content-center">
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
-            {{ post.content }}
+            {{ post.content|nl2br }}
         </div>
     </div>
 </article>
@@ -76,10 +76,10 @@
                                         <input type="hidden" name="postId" value="{{postId}}" />
                                         <input type="hidden" name="commentId" value="{{com.id}}" />
                                         <input class="btn btn-success rounded"
-                                            type="submit" value="Valider" />
+                                            type="submit" value="Approuver" />
                                     </form>
                                 {% else %}
-                                    <button class="btn border border-secondary rounded" disabled>Validé</button>
+                                    <button class="btn border border-secondary rounded" disabled>Approuvé</button>
                                 {% endif %}
                                 <form action="/comment/delete" method="post">
                                     <input type="hidden" name="postId" value="{{postId}}" />
