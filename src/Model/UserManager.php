@@ -4,7 +4,7 @@ namespace App\Model;
 
 class UserManager extends BaseManager
 {
-    public function getUserByCredentials($email, $password) : User
+    public function getUserByCredentials(string $email, string $password) : ?User
     {
         $pwdHash = $this->getHash($password);
 
@@ -14,8 +14,20 @@ class UserManager extends BaseManager
                 WHERE u.email = ? AND u.password = ?');
 
         $req->setFetchMode(\PDO::FETCH_CLASS, User::class);
-        $rslt = $req->execute(array($email, $pwdHash));
-        return !$rslt ? false : $req->fetch();
+        
+        if(!$req->execute(array($email, $pwdHash))) {
+            return null;
+        }
+
+        $rslt = $req->fetch();
+        return !$rslt ? null : $rslt;
+    }
+
+    public function getUserEmail(string $name) : string
+    {
+        $req = $this->getCnx()->prepare('SELECT u.email FROM user u WHERE u.name = ?');
+        $req->execute(array($name));
+        return $req->fetch()[0];
     }
 
     public function registerUser(string $token)
@@ -28,7 +40,7 @@ class UserManager extends BaseManager
         return $rslt;
     }
 
-    public function checkUserExists($username)
+    public function checkUserExists(string $username)
     {
         $req = $this->getCnx()->prepare('SELECT * FROM user u WHERE u.name = ?');
         $req->execute(array($username));
