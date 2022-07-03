@@ -18,7 +18,7 @@ class Post
 
     public static function GetOrThrow($varname, $isNum = false) : string
     {
-        $value = isset($_POST[$varname]) ? stripslashes(trim($_POST[$varname])) : false;
+        $value = isset($_POST[$varname]) ? trim($_POST[$varname]) : false;
         
         if($value == false) {
             self::ThrowPostException();

@@ -53,16 +53,16 @@ header.masthead .site-heading h1 {
 }
 
 header.masthead {
-    padding-top: calc(6rem);
-    padding-bottom: 6rem;
+  padding-top: calc(6rem);
+  padding-bottom: 6rem;
 }
 
 @media (min-width: 992px) {
-    header.masthead {
-        padding-top: 6rem;
-        padding-bottom: 6rem;
-    }
-    header.masthead .site-heading h1 {
-        font-size: 4.5rem;
-    }
+  header.masthead {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+  header.masthead .site-heading h1 {
+    font-size: 4.5rem;
+  }
 }
