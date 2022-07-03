@@ -6,8 +6,8 @@
 .photo {
   padding: 0;
   margin: 0;
-  width: 300px;
-  height: 300px;
+  width: 15rem;
+  height: 15rem;
   border-radius: 50%;
 }
 
@@ -46,4 +46,23 @@
 
 .user-row:hover {
   background-color: rgba(8, 5, 158, 0.123);
+}
+
+header.masthead .site-heading h1 {
+  font-size: 2.75rem;
+}
+
+header.masthead {
+    padding-top: calc(6rem);
+    padding-bottom: 6rem;
+}
+
+@media (min-width: 992px) {
+    header.masthead {
+        padding-top: 6rem;
+        padding-bottom: 6rem;
+    }
+    header.masthead .site-heading h1 {
+        font-size: 4.5rem;
+    }
 }

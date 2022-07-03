@@ -17,7 +17,7 @@ class LoginController extends BaseController
             return $this->displayPage('Bonjour, ' . \App\Utils\Session::GetUsername());
         }
 
-        if (\App\Utils\Post::IsEmpty($_POST)) {
+        if (\App\Utils\Post::IsEmpty()) {
             return $this->displayPage('Se connecter');
         }
 

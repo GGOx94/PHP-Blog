@@ -10,6 +10,6 @@ class Server
             return null;
         }
 
-        return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null;
+        return isset($_SERVER['REQUEST_URI']) ? stripslashes($_SERVER['REQUEST_URI']) : null;
     }
 }
