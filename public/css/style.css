@@ -1,45 +1,49 @@
 .error {
-    text-align: center;
-    background-color: rgba(255, 0, 0, 0.379);
+  text-align: center;
+  background-color: rgba(255, 0, 0, 0.379);
 }
 
 .photo {
-    padding: 0;
-    margin: 0;
-    width: 300px;
-    height: 300px;
-    
-    border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
 }
 
 .post {
-    background-color: rgba(127, 255, 212, 0.278);
+  background-color: rgba(127, 255, 212, 0.278);
 }
 
 .comment-approved {
-    background-color: rgba(0, 128, 0, 0.18);
+  background-color: rgba(0, 128, 0, 0.18);
 }
 
 .comment-waiting {
-    background-color: rgba(165, 42, 42, 0.335);
+  background-color: rgba(165, 42, 42, 0.335);
+}
+
+.com-content {
+  word-wrap: break-word;
+  font-style: italic;
 }
 
 .form-buttons {
-    display: flex;
-    gap: .15em;
-    justify-content: space-between;
+  display: flex;
+  gap: 0.15em;
+  justify-content: space-between;
 }
 
 .user-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 5px;
-    padding: 0px 15px 5px 15px;
-    line-height: 0px;
-    border-bottom: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px;
+  padding: 0 15px 5px 15px;
+  line-height: 0;
+  border-bottom: 1px solid black;
 }
 
 .user-row:hover {
-    background-color:rgba(8, 5, 158, 0.123);
+  background-color:rgba(8, 5, 158, 0.123);
 }

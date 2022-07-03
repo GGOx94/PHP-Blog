@@ -28,7 +28,10 @@
                             <h3 class="post-subtitle">{{post.head}}</h3>
                         </a>
                         <p class="post-meta">
-                            Par <a href="#0">{{post.author}}</a> le {{post.createdAt}}
+                            Par <a href="#0">{{post.author}}</a> le {{post.createdAt|format_datetime('medium', 'short', locale='fr')}}
+                            {% if post.modifiedAt %}
+                                &nbsp;<small>- Modifié le {{post.modifiedAt|format_datetime('medium', 'short', locale='fr')}}</small>
+                            {% endif %}
                         </p>
                         
                         <hr class="my-4" />

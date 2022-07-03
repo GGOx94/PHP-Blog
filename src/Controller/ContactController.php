@@ -20,7 +20,7 @@ class ContactController extends BaseController
 
     public function __invoke() : string
     {
-        if (!$_POST) {
+        if (empty($_POST)) {
             return $this->displayPage();
         }
 

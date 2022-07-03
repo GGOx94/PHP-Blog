@@ -14,10 +14,10 @@ class LoginController extends BaseController
     public function __invoke() : ?string
     {
         if (\App\Utils\Session::IsLogged()) {
-            return $this->displayPage('Bonjour, ' . $_SESSION['username']);
+            return $this->displayPage('Bonjour, ' . \App\Utils\Session::GetUsername());
         }
 
-        if (!$_POST) {
+        if (empty($_POST)) {
             return $this->displayPage('Se connecter');
         }
 
@@ -44,6 +44,7 @@ class LoginController extends BaseController
         }
 
         \App\Utils\Session::SetUserVars($user);
+        
         return header('location: /');
     }
 

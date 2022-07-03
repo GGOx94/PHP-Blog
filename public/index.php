@@ -4,7 +4,7 @@ require '../vendor/autoload.php';
 
 try 
 {
-    $req = App\Controller\BaseController::CreateFromUri($_SERVER['REQUEST_URI']);
+    $req = App\Controller\BaseController::CreateFromUri(\App\Utils\Server::GetUri());
 
     App\Utils\Session::Start();
 

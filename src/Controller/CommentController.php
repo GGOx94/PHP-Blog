@@ -83,7 +83,6 @@ class CommentController extends BaseController
         }
 
         $rslt = $this->db->approveById($commentId);
-        var_dump($rslt);
 
         if($rslt === false) {
             throw new RuntimeException('Un problème est survenu lors de la validation du commentaire.');

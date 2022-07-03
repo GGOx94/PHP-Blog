@@ -131,7 +131,7 @@ class Post
     }
 
     /**
-     * Append a comment to the $comments array
+     * Set the value of the comments array
      * 
      * @return  self
      */ 
