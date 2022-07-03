@@ -5,11 +5,11 @@ use RuntimeException;
 
 class CommentController extends BaseController
 {
-    private $db;
+    private \App\Model\CommentManager $comDb;
 
     public function __construct()
     {
-        $this->db = new \App\Model\CommentManager;
+        $this->comDb = new \App\Model\CommentManager;
     }
 
     public function __invoke(array $action) : void
@@ -56,7 +56,7 @@ class CommentController extends BaseController
         $username = \App\Utils\Session::GetUsername();
         $isAdmin = \App\Utils\Session::IsUserAdmin();
 
-        $rslt = $this->db->addOnPostID($postId, $comment, $username, $isAdmin);
+        $rslt = $this->comDb->addOnPostID($postId, $comment, $username, $isAdmin);
 
         if(!$rslt) {
             throw new RuntimeException('Un problème est survenu lors de l\'enregistrement du commentaire.');
@@ -69,7 +69,7 @@ class CommentController extends BaseController
             $this->throwBadAction();
         }
 
-        $rslt = $this->db->deleteById($commentId);
+        $rslt = $this->comDb->deleteById($commentId);
 
         if(!$rslt) {
             throw new RuntimeException('Un problème est survenu lors de la suppression du commentaire.');
@@ -82,7 +82,7 @@ class CommentController extends BaseController
             $this->throwBadAction();
         }
 
-        $rslt = $this->db->approveById($commentId);
+        $rslt = $this->comDb->approveById($commentId);
 
         if($rslt === false) {
             throw new RuntimeException('Un problème est survenu lors de la validation du commentaire.');

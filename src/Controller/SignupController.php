@@ -11,11 +11,11 @@ use App\View\Twig;
 class SignupController extends BaseController
 {
     private $errArr = [];
-    private $db;
+    private \App\Model\UserManager $userDb;
 
     public function __construct()
     {
-        $this->db = new \App\Model\UserManager();
+        $this->userDb = new \App\Model\UserManager();
     }
 
     public function __invoke(?array $args) : string
@@ -23,14 +23,14 @@ class SignupController extends BaseController
         if(isset($args[0])) // then arg[0] is a token from a registration link
         {
             $token = $args[0];
-            if(!$this->db->isTokenValid($token)) 
+            if(!$this->userDb->isTokenValid($token)) 
             {
                 $this->errArr[] = "Le jeton d'enregistrement a expiré ou est invalide.<br/>
                     Si vous souhaitiez créer un compte, essayez à nouveau.";
                 return $this->displayErrors();
             }
 
-            $rslt = $this->db->registerUser($token);
+            $rslt = $this->userDb->registerUser($token);
             if(!$rslt) 
             {
                 $this->errArr[] = "Un problème est survenu lors de l'enregistrement.";
@@ -49,11 +49,11 @@ class SignupController extends BaseController
             $this->errArr[] = "Les mots de passe ne correspondent pas.";
         }
 
-        if($this->db->checkUserExists($name)) {
+        if($this->userDb->checkUserExists($name)) {
             $this->errArr[] = "Ce pseudonyme est déjà utilisé.";
         }
 
-        if($this->db->checkEmailExists($email)) {
+        if($this->userDb->checkEmailExists($email)) {
             $this->errArr[] = "Cet e-mail est déjà enregistré.";
         }
         
@@ -61,7 +61,7 @@ class SignupController extends BaseController
             return $this->displayErrors();
         }
 
-        $token = $this->db->preRegisterUser($name, $email, $pwd1);
+        $token = $this->userDb->preRegisterUser($name, $email, $pwd1);
         $this->sendRegistrationMail($name, $email, $token);
         return $this->displayMailSent($name, $email);
     }

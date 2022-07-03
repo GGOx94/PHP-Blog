@@ -6,8 +6,8 @@ use RuntimeException;
 
 class PostController extends BaseController
 {
-    private $dbPosts;
-    private $dbComments;
+    private \App\Model\PostManager $dbPosts;
+    private \App\Model\CommentManager $dbComments;
     
     public function __construct()
     {

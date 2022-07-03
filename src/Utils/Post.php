@@ -7,6 +7,15 @@ use RuntimeException;
 
 class Post
 {
+    public static function IsEmpty() : bool 
+    {
+        if(!isset($_POST)) {
+            return true;
+        }
+        
+        return empty($_POST);
+    }
+
     public static function GetOrThrow($varname, $isNum = false) : string
     {
         $value = isset($_POST[$varname]) ? trim($_POST[$varname]) : false;

@@ -4,11 +4,11 @@ namespace App\Controller;
 
 class LoginController extends BaseController
 {
-    private \App\Model\UserManager $db;
+    private \App\Model\UserManager $userDb;
 
     public function __construct()
     {
-        $this->db = new \App\Model\UserManager();
+        $this->userDb = new \App\Model\UserManager();
     }
 
     public function __invoke() : ?string
@@ -17,7 +17,7 @@ class LoginController extends BaseController
             return $this->displayPage('Bonjour, ' . \App\Utils\Session::GetUsername());
         }
 
-        if (empty($_POST)) {
+        if (\App\Utils\Post::IsEmpty($_POST)) {
             return $this->displayPage('Se connecter');
         }
 
@@ -29,7 +29,7 @@ class LoginController extends BaseController
 
     private function loginUser(string $email, string $password) : ?string
     {
-        $user = $this->db->getUserByCredentials($email, $password);
+        $user = $this->userDb->getUserByCredentials($email, $password);
 
         if(!$user) {
             return $this->displayError("Mauvais identifiant ou mot de passe.");
