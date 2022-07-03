@@ -15,7 +15,7 @@ class AdminController extends BaseController
         $this->dbUsers = new \App\Model\UserManager();
     }
 
-    public function __invoke($action) : string
+    public function __invoke(?string $action) : string
     {
         // Critical section: refresh session id by checking IsLogged and verify the user is an administrator
         if(!\App\Utils\Session::IsLogged() || !\App\Utils\Session::IsUserAdmin()) {

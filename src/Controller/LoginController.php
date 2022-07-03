@@ -32,7 +32,7 @@ class LoginController extends BaseController
         $user = $this->db->getUserByCredentials($email, $password);
 
         if(!$user) {
-            return $this->displayError("Mauvais identifiant ou mot de passe");
+            return $this->displayError("Mauvais identifiant ou mot de passe.");
         }
 
         if($user->getStatus() === 'banned') {
@@ -40,7 +40,7 @@ class LoginController extends BaseController
         }
 
         if($user->getStatus() === 'signing_up') {
-            return $this->displayError("Vous n'avez pas activé votre compte, vérifiez votre boîte mail");
+            return $this->displayError("Vous n'avez pas activé votre compte, vérifiez votre boîte mail.");
         }
 
         \App\Utils\Session::SetUserVars($user);
