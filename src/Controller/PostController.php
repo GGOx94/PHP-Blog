@@ -15,7 +15,7 @@ class PostController extends BaseController
         $this->dbComments = new \App\Model\CommentManager();
     }
 
-    public function __invoke(array $args)
+    public function __invoke(array $args) : string
     {
         $post = $this->dbPosts->getPostByID($args[0]);
         if(!$post) {

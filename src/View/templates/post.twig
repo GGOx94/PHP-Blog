@@ -10,7 +10,7 @@
                     <h1>
                         {{title}}
                     </h1>
-                    <h2 class="subheading">{{ post.head }}</h2>
+                    <h2 class="subheading">{{ post.head|nl2br }}</h2>
                     <span class="meta">
                         Par <a href="#!">{{post.author}}</a> le {{post.createdAt|format_datetime('medium', 'short', locale='fr')}}
                     </span>

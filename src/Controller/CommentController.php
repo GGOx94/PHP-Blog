@@ -12,7 +12,7 @@ class CommentController extends BaseController
         $this->db = new \App\Model\CommentManager;
     }
 
-    public function __invoke($action)
+    public function __invoke(array $action) : void
     {
         // Sensitive page : check user login status, will refresh session ID in the process
         if(!\App\Utils\Session::IsLogged()) {
@@ -51,7 +51,7 @@ class CommentController extends BaseController
         header('location: /post/' . $postId);
     }
 
-    private function add($comment, $postId)
+    private function add(string $comment, int $postId) : void
     {
         $username = \App\Utils\Session::GetUsername();
         $isAdmin = \App\Utils\Session::IsUserAdmin();
@@ -63,7 +63,7 @@ class CommentController extends BaseController
         }
     }
 
-    private function delete($commentId)
+    private function delete(int $commentId) : void
     {
         if(!\App\Utils\Session::IsUserAdmin()) {
             $this->throwBadAction();
@@ -76,7 +76,7 @@ class CommentController extends BaseController
         }
     }
 
-    private function approve($commentId)
+    private function approve(int $commentId) : void
     {
         if(!\App\Utils\Session::IsUserAdmin()) {
             $this->throwBadAction();
@@ -90,7 +90,7 @@ class CommentController extends BaseController
         }
     }
 
-    private function throwBadAction()
+    private function throwBadAction() : void
     {
         throw new RuntimeException('Action demandée invalide.');
     }

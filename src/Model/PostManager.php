@@ -52,7 +52,7 @@ class PostManager extends BaseManager
         return $rslt ? $this->getCnx()->lastInsertId() : null;
     }
 
-    public function updatePost(Post $post)
+    public function updatePost(Post $post) : bool
     {
         $req = $this->getCnx()->prepare(
                 'UPDATE post

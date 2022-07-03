@@ -4,7 +4,7 @@ namespace App\Utils;
 
 class Session
 {
-    public static function Start()
+    public static function Start() : void
     {
         ini_set('session.use_strict_mode', 1); // Ensure strict mode
         session_start();
@@ -23,7 +23,7 @@ class Session
         return isset($_SESSION['username']);
     }
 
-    public static function Destroy()
+    public static function Destroy() : void
     {
         if(session_status() == PHP_SESSION_ACTIVE)
         {

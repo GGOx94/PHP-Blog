@@ -6,14 +6,14 @@ abstract class BaseController
 {
     // All controllers use this function to render their twig templates
     // We set sessions variables for twig (username, isAdmin, ...) from here
-    protected function render($template, $data) : string
+    protected function render(string $template, array $data) : string
     {
         $data['session_username'] = \App\Utils\Session::GetUsername();
         $data['session_isAdmin'] = \App\Utils\Session::IsUserAdmin();
         return \App\View\Twig::getInstance()->render($template, $data);
     }
 
-    public static function CreateFromUri($path) : array
+    public static function CreateFromUri(string $path) : array
     {
         foreach (\Config\Routes::get() as $uri => $controller)
         {

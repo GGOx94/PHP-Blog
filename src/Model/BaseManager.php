@@ -4,7 +4,7 @@ namespace App\Model;
 
 abstract class BaseManager
 {
-    private static $cnx;
+    private static \PDO $cnx;
     
     protected static function getCnx() : \PDO
     {
