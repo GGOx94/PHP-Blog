@@ -14,13 +14,6 @@ class Post
 
     private array $comments = []; // Used in admin panel page
 
-    function __set($name, $value)
-    {
-        $str = 'IN __SET OF POST.PHP -> '.$name.' : '.$value.'</br>';
-        \App\Utils\Server::Log($str);
-        error_log(print_r('- - - -' . $str, TRUE)); 
-    }
-
     /************************/
     /** GETTERS AND SETTERS */
     /************************/

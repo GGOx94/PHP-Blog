@@ -144,8 +144,7 @@ class AdminController extends BaseController
         else if($status === "visitor") {
             return $this->dbUsers->unbanUser($name);
         }
-        else {
-            throw new \Exception("Mauvais status d'utilisateur envoyé au controlleur.");
-        }
+            
+        throw new \Exception("Mauvais status d'utilisateur envoyé au controlleur.");
     }
 }

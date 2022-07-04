@@ -41,7 +41,6 @@ class Post
         }
     }
 
-
     private static function ThrowPostException()
     {
         throw new RuntimeException('Un problème est survenu avec les données envoyées.');
