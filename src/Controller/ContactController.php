@@ -40,7 +40,7 @@ class ContactController extends BaseController
         $data = [
             'name' => $name,
             'email' => $email,
-            'message' => $message,
+            'message' => htmlspecialchars_decode($message),
             'siteUrl' => \Config\Config::get('site_base_url')
         ];
 

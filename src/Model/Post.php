@@ -14,6 +14,13 @@ class Post
 
     private array $comments = []; // Used in admin panel page
 
+    function __set($name, $value)
+    {
+        $str = 'IN __SET OF POST.PHP -> '.$name.' : '.$value.'</br>';
+        \App\Utils\Server::Log($str);
+        error_log(print_r('- - - -' . $str, TRUE)); 
+    }
+
     /************************/
     /** GETTERS AND SETTERS */
     /************************/
@@ -43,7 +50,7 @@ class Post
      */ 
     public function getTitle()
     {
-        return $this->title;
+        return htmlspecialchars_decode($this->title);
     }
 
     /**
@@ -63,7 +70,7 @@ class Post
      */ 
     public function getHead()
     {
-        return $this->head;
+        return htmlspecialchars_decode($this->head);
     }
 
     /**
@@ -83,7 +90,7 @@ class Post
      */ 
     public function getContent()
     {
-        return $this->content;
+        return htmlspecialchars_decode($this->content);
     }
 
     /**

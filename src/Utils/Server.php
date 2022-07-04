@@ -12,4 +12,12 @@ class Server
 
         return isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null;
     }
+
+    public static function Log($data) {
+        $output = $data;
+        if (is_array($output))
+            $output = implode(',', $output);
+    
+        echo "<script>console.log('[PHP]: " . $output . "' );</script>";
+    }
 }

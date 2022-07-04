@@ -27,7 +27,7 @@ class Comment
      */ 
     public function getContent()
     {
-        return $this->content;
+        return htmlspecialchars_decode($this->content);
     }
 
     /**

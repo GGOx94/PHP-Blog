@@ -20,7 +20,7 @@ class SignupController extends BaseController
 
     public function __invoke(?array $args) : string
     {
-        if(isset($args[0])) // then arg[0] is a token from a registration link
+        if(isset($args[0])) // arg[0] should be a token from a registration link
         {
             $token = $args[0];
             if(!$this->userDb->isTokenValid($token)) 
@@ -40,6 +40,7 @@ class SignupController extends BaseController
             return $this->displaySuccess();
         }
 
+        
         $pwd1 = \App\Utils\Post::GetOrThrow('password');
         $pwd2 = \App\Utils\Post::GetOrThrow('password-2');
         $name = \App\Utils\Post::GetOrThrow('name');
@@ -57,6 +58,10 @@ class SignupController extends BaseController
             $this->errArr[] = "Cet e-mail est déjà enregistré.";
         }
         
+        if(!preg_match("/^([\pL\pN ]){2,20}$/u", $name)) {
+            $this->errArr[] = "Le nom d'utilisateur doit faire 3 à 20 caractères, sans symboles.";
+        }
+
         if(count($this->errArr) > 0) {
             return $this->displayErrors();
         }

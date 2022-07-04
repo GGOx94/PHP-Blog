@@ -15,7 +15,7 @@ class AdminController extends BaseController
         $this->dbUsers = new \App\Model\UserManager();
     }
 
-    public function __invoke(?array $action) : string
+    public function __invoke(?array $action) : ?string
     {
         // Critical section: refresh session id by checking IsLogged and verify the user is an administrator
         if(!\App\Utils\Session::IsLogged() || !\App\Utils\Session::IsUserAdmin()) {
@@ -125,7 +125,7 @@ class AdminController extends BaseController
         return $this->displayPostsPanel();
     }
 
-    private function buildPostInstance(int $postId) : \App\Model\Post
+    private function buildPostInstance(?int $postId) : \App\Model\Post
     {
         $post = (new \App\Model\Post())
             ->setId($postId)

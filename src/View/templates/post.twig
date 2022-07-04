@@ -72,7 +72,7 @@
                             <span class="meta">
                                 Par <a href="#!">{{com.author}}</a>, le {{com.createdAt|format_datetime('medium', 'short', locale='fr')}}
                             </span>
-                            <p class="com-content">{{com.content}}</p>
+                            <p class="com-content">{{com.content|nl2br}}</p>
                             <div class="form-buttons">
                                 {% if not approved %}
                                     <form action="/comment/approve" method="post"> 
@@ -103,7 +103,7 @@
                                 <span class="meta">
                                     Par <a href="#!">{{com.author}}</a>, le {{com.createdAt|format_datetime('medium', 'short', locale='fr')}}
                                 </span>
-                                <p class="com-content">{{com.content}}</p>
+                                <p class="com-content">{{com.content|nl2br}}</p>
                             </li>
 
                         {# Allow the user to see his own 'waiting' comments #}
@@ -114,7 +114,7 @@
                                     <br />
                                     <small class="form-text text-muted"><em>(En attente de validation par un administrateur)</em></small>
                                 </span>
-                                <p class="com-content text-muted">{{com.content}}</p>
+                                <p class="com-content text-muted">{{com.content|nl2br}}</p>
                             </li>
 
                         {% endif %}
