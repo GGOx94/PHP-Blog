@@ -2,7 +2,7 @@
 {% block content %}
 
 <!-- Page Header-->
-<header class="masthead" style="background-image: url('/assets/img/post-bg.jpg')">
+<header class="masthead" style="background-image: url('/assets/img/login.jpg')">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
@@ -22,6 +22,19 @@
 
 {# User is already connected #}
 {% if session_username %}
+
+    {# Errors can happen here if user clicked again on his registration link #}
+    {% if error_messages %}
+
+        <div class="row justify-content-center">
+        {% for errMsg in error_messages %}
+            <div class="col-md-7 col-lg-7 col-xl-7 alert alert-danger text-center">
+                {{ errMsg|raw }}
+            </div>
+        {% endfor %}
+        </div> 
+
+    {% endif %}
 
     <a class="row justify-content-center" href="/logout">
         <button class="col-md-7 col-lg-7 col-xl-7 btn btn-danger">Se déconnecter</button>

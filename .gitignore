@@ -3,4 +3,5 @@ tmp/
 .idea/
 vendor/
 *.code-workspace
+config_local.php
 NOTES.txt

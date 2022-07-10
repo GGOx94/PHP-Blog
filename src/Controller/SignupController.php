@@ -58,7 +58,7 @@ class SignupController extends BaseController
             $this->errArr[] = "Cet e-mail est déjà enregistré.";
         }
         
-        if(!preg_match("/^([\pL\pN ]){2,20}$/u", $name)) {
+        if(!preg_match("/^([\pL\pN ]){3,20}$/u", $name)) {
             $this->errArr[] = "Le nom d'utilisateur doit faire 3 à 20 caractères, sans symboles.";
         }
 
@@ -91,7 +91,7 @@ class SignupController extends BaseController
             ->to($email)
             ->subject('[Amazing Blog] Création de compte : ' . $name)
             ->text('Suivez ce lien pour valider l\'enregistrement de votre compte : ' . $signupUrl)
-            ->html(Twig::getInstance()->render('mailSignup.twig', $data)); 
+            ->html(Twig::getInstance()->render('mailSignup.twig', $data));
 
         $mailer->send($mail);
     }
