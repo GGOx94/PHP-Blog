@@ -15,7 +15,7 @@ class AdminController extends BaseController
         $this->dbUsers = new \App\Model\UserManager();
     }
 
-    public function __invoke(?string $action) : string
+    public function __invoke(?array $action) : ?string
     {
         // Critical section: refresh session id by checking IsLogged and verify the user is an administrator
         if(!\App\Utils\Session::IsLogged() || !\App\Utils\Session::IsUserAdmin()) {
@@ -23,14 +23,19 @@ class AdminController extends BaseController
         }
 
         // Admin panel requested with simple '/admin' URI
-        if(!isset($action)) { 
+        if(!isset($action) || empty($action)) { 
             return $this->displayPostsPanel();
         }
+        
+        return $this->handleAction($action[0]);
+    }
 
+    private function handleAction(string $action) : ?string
+    {
         // optionnal postId used for 'delete', 'edit' & 'post' action cases
         $postId = \App\Utils\Post::GetOrNull('postId', true); 
 
-        switch($action[0])
+        switch($action)
         {
             case 'delete':
                 return $this->deletePost($postId);
@@ -54,7 +59,6 @@ class AdminController extends BaseController
             default:
                 throw new \Exception('Action demandée invalide.');
         }
-
     }
 
     private function displayPostsPanel() : string
@@ -121,13 +125,14 @@ class AdminController extends BaseController
         return $this->displayPostsPanel();
     }
 
-    private function buildPostInstance(int $postId) : \App\Model\Post
+    private function buildPostInstance(?int $postId) : \App\Model\Post
     {
-        $post = new \App\Model\Post();
-        $post->setId($postId);
-        $post->setTitle(\App\Utils\Post::GetOrThrow('title'));
-        $post->setHead(\App\Utils\Post::GetOrThrow('head'));
-        $post->setContent(\App\Utils\Post::GetOrThrow('content')); 
+        $post = (new \App\Model\Post())
+            ->setId($postId)
+            ->setTitle(\App\Utils\Post::GetOrThrow('title'))
+            ->setHead(\App\Utils\Post::GetOrThrow('head'))
+            ->setContent(\App\Utils\Post::GetOrThrow('content')); 
+
         return $post;
     }
 
@@ -139,8 +144,7 @@ class AdminController extends BaseController
         else if($status === "visitor") {
             return $this->dbUsers->unbanUser($name);
         }
-        else {
-            throw new \Exception("Mauvais status d'utilisateur envoyé au controlleur.");
-        }
+            
+        throw new \Exception("Mauvais status d'utilisateur envoyé au controlleur.");
     }
 }

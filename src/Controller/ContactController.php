@@ -11,16 +11,16 @@ use App\View\Twig;
 
 class ContactController extends BaseController
 {
-    private UserManager $db;
+    private UserManager $userDb;
 
     public function __construct()
     {
-        $this->db = new UserManager();
+        $this->userDb = new UserManager();
     }
 
     public function __invoke() : string
     {
-        if (!$_POST) {
+        if (\App\Utils\Post::IsEmpty()) {
             return $this->displayPage();
         }
 
@@ -40,7 +40,7 @@ class ContactController extends BaseController
         $data = [
             'name' => $name,
             'email' => $email,
-            'message' => $message,
+            'message' => htmlspecialchars_decode($message),
             'siteUrl' => \Config\Config::get('site_base_url')
         ];
 
@@ -75,7 +75,7 @@ class ContactController extends BaseController
         if(\App\Utils\Session::IsLogged()) 
         {
             $data['user_name'] = \App\Utils\Session::GetUsername();
-            $data['user_email'] = $this->db->getUserEmail($data['user_name']);
+            $data['user_email'] = $this->userDb->getUserEmail($data['user_name']);
         }
 
         return $this->render('contact.twig', $data);

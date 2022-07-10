@@ -7,11 +7,20 @@ use RuntimeException;
 
 class Post
 {
+    public static function IsEmpty() : bool 
+    {
+        if(!isset($_POST)) {
+            return true;
+        }
+        
+        return empty($_POST);
+    }
+
     public static function GetOrThrow($varname, $isNum = false) : string
     {
-        $value = (isset($_POST[$varname]) ? $_POST[$varname] : false);
+        $value = isset($_POST[$varname]) ? trim(htmlspecialchars($_POST[$varname])) : false;
         
-        if($value === false) {
+        if($value == false) {
             self::ThrowPostException();
         }
 
@@ -31,7 +40,6 @@ class Post
             return null;
         }
     }
-
 
     private static function ThrowPostException()
     {

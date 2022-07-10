@@ -43,7 +43,7 @@ class Post
      */ 
     public function getTitle()
     {
-        return $this->title;
+        return htmlspecialchars_decode($this->title);
     }
 
     /**
@@ -63,7 +63,7 @@ class Post
      */ 
     public function getHead()
     {
-        return $this->head;
+        return htmlspecialchars_decode($this->head);
     }
 
     /**
@@ -83,7 +83,7 @@ class Post
      */ 
     public function getContent()
     {
-        return $this->content;
+        return htmlspecialchars_decode($this->content);
     }
 
     /**
@@ -131,7 +131,7 @@ class Post
     }
 
     /**
-     * Append a comment to the $comments array
+     * Set the value of the comments array
      * 
      * @return  self
      */ 

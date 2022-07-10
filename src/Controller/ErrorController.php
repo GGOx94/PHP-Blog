@@ -4,20 +4,20 @@ namespace App\Controller;
 
 class ErrorController extends BaseController
 {
-    public static function Display(\Exception $e) : string
+    public static function Display(\Exception $exc) : string
     {
         $errCtrl = new ErrorController();
         
-        switch($e)
+        switch($exc)
         {
-            case str_contains($e, '403'):
+            case str_contains($exc, '403'):
                 return $errCtrl->renderError(null, '403');
 
-            case str_contains($e, '404'):
+            case str_contains($exc, '404'):
                 return $errCtrl->renderError(null, '404');
 
             default:
-                return $errCtrl->renderError($e->getMessage());
+                return $errCtrl->renderError($exc->getMessage());
         }
     }
     
