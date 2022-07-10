@@ -7,6 +7,11 @@
 -- Version du serveur : 10.4.24-MariaDB
 -- Version de PHP : 8.1.4
 
+-- INFOS SUR LES UTILISATEURS :
+-- 		2 comptes administrateurs : ggo@p5phpblog.net & admin_2@p5phpblog.net 
+--		3 comptes visiteurs : jdoe@hotmail.fr / jane_doe@gmail.com / do@doe.do
+-- Tous les utilisateurs ont pour mot de passe : '123'
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
