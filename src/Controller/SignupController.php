@@ -62,6 +62,10 @@ class SignupController extends BaseController
             $this->errArr[] = "Le nom d'utilisateur doit faire 3 à 20 caractères, sans symboles.";
         }
 
+        if(!preg_match('/^(?=.*\d)(?=.*[A-Z])[0-9A-Za-z]{8,50}$/', $pwd1)) {
+            $this->errArr[] = "Le mot de passe doit faire 8 à 50 caractères et contenir au moins :<br/> une majuscule, une minuscule et un chiffre.";
+        }
+
         if(count($this->errArr) > 0) {
             return $this->displayErrors();
         }
