@@ -9,7 +9,7 @@ Pour installer le projet sur votre machine, suivez ces étapes :
 - Installez [Composer](https://getcomposer.org/download/)
 - Clonez le projet dans un répertoire et exécutez :
 	
-		composer init
+		composer install
 - Créez la base de données via */sql/create_db_demo_data.sql*
 	>Ce script créera une base de données "p5phpblogDEMO" avec un jeu de démo
 		Les informations sur les accès utilisateurs sont disponibles au début de ce script
